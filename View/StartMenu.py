@@ -1,1 +1,7 @@
-__author__ = 'StudentNathan'
+# StartMenu.py
+# 
+# File Contributors
+#     
+# 
+# Purpose:
+# 
