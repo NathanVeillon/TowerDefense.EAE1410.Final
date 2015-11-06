@@ -8,8 +8,8 @@ from .Path import *
 
 class End(Path):
 
-    def __init__(self,tile_size):
-        Path.__init__(self,tile_size,'Library/Assets/Tiles/End.png')
+    def __init__(self,tile_size,current_direction,previous_direction):
+        Path.__init__(self,tile_size,current_direction,previous_direction,'Library/Assets/Tiles/End.png')
         self.type = 'End'
         self.can_place_tower = False
 
