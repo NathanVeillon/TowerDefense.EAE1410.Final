@@ -3,6 +3,7 @@
 # File Contributors
 #     Nathan Veillon
 
+import time
 import sys
 import pygame
 from pygame.locals import *
@@ -25,10 +26,13 @@ class DisplayWindow:
 
     def display_window(self):
         while True:
-            for event in pygame.event.get():
+            for event in pygame.event.get(QUIT):
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
+                    
+            if(time.time()%1000 < 990):
+                pygame.event.clear()
 
 
             self.window.fill((255,255,255))
