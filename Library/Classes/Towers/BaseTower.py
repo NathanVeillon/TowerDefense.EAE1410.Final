@@ -1,11 +1,13 @@
+import time
 import pygame
 from pygame.locals import *
 from math import sqrt
 
+
 class BaseTower():
 
     #tower_size should be equal to tile_size
-    def __init__(self, tower_size, position, attack_radius, enemy_wave_list, image_location='Library/Assets/Tiles/BaseTower.png'):
+    def __init__(self, tower_size, position, attack_radius, enemy_wave_list, image_location='Library/Assets/Towers/BaseTower.png'):
         self.position = position
         self.dimension = (tower_size, tower_size)
         self.center_position = (self.position[0] + self.dimension[0] // 2, self.position[1] + self.dimension[1] // 2)
@@ -43,8 +45,10 @@ class BaseTower():
 
     #Draws a line to attack enemy
     def attack_enemy(self):
-        if (self.enemy_to_attack == None):
-            return None
+        if (time.clock() % 3 == 0): #Time delay for attacking
 
-        attack_position = self.enemy_to_attack.position
-        pygame.draw.line(pygame.display.get_surface(), (0, 0, 0), (self.center_position[0], self.center_position[1]), attack_position, 2)
+            if (self.enemy_to_attack == None):
+                return None
+
+            attack_position = self.enemy_to_attack.position
+            pygame.draw.line(pygame.display.get_surface(), (0, 0, 0), (self.center_position[0], self.center_position[1]), attack_position, 2)
