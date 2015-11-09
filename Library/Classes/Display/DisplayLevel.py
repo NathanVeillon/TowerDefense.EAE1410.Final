@@ -18,6 +18,14 @@ class DisplayLevel:
     def display_tile_map(self):
         self.tile_map.display_tile_map()
 
+    def window_clicked(self):
+        #for event in pygame.event.get(MOUSEBUTTONUP)
+        #if (mouse position within tile map)
+        #   tilemap.clicked(mouse position)
+        #elif (mouse position within tile)
+        #   levelmenu.clicked(mouse position)
+        return None
+
 
 
 

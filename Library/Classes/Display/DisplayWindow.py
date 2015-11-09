@@ -30,7 +30,7 @@ class DisplayWindow:
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
-                    
+
             if(time.time()%1000 < 990):
                 pygame.event.clear()
 
