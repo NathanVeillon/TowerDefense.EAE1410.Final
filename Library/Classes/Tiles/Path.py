@@ -35,7 +35,9 @@ class Path(BaseTile):
         return orientation
 
     def select_correct_image(self):
-        pass
+        if(self.previous_direction != self.current_direction):
+            pass
+        return
 
 
 
