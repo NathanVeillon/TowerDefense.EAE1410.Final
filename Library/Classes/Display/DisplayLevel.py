@@ -23,6 +23,10 @@ class DisplayLevel:
     def display_tile_map(self):
         self.tile_map.display_tile_map()
 
+    #Josh method for displaying the start (tower) menu
+    def display_start_menu(self):
+        self.start_menu.display_start_menu()
+
     def window_clicked(self):
         for event in pygame.event.get(MOUSEBUTTONUP):
             mouse_pos = pygame.mouse.get_pos()
