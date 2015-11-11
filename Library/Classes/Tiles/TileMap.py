@@ -89,5 +89,8 @@ class TileMap():
 
         self.window.blit(self.map_base,(0,0))
 
+    #player has clicked somewhere within the tile map
+    def clicked(self, mouse_pos):
+        print("Tile map has been clicked at", mouse_pos)
 
 

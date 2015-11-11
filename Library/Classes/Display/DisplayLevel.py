@@ -5,8 +5,11 @@
 #     Josh Rosen
 #
 
+import pygame
+from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
+from View.StartMenu import *
 
 class DisplayLevel:
 
@@ -17,28 +20,23 @@ class DisplayLevel:
         self.tile_map = TileMap(self.letter_map)
         # self.level_menu = LevelMenu()
 
+        self.level_menu = LevelMenu()
+
     def display_tile_map(self):
         self.tile_map.display_tile_map()
 
+    #Josh method for displaying the start (tower) menu
+    def display_level_menu(self):
+        self.level_menu.display_start_menu()
+
     def window_clicked(self):
         for event in pygame.event.get(MOUSEBUTTONUP):
-            mouse_position = event.pos
-            if self.mouse_position_in_tile_map(mouse_position):
-                self.tile_map.clicked(mouse_position)
-            elif self.mouse_position_in_level_menu(mouse_position):
-                self.level_menu.clicked(mouse_position)
+            mouse_pos = pygame.mouse.get_pos()
 
-    def mouse_position_in_tile_map(self,mouse_position):
-        x,y = mouse_position
-        if(x <= self.tile_map.map_size):
-            return True
-        return False
-
-    def mouse_position_in_level_menu(self,mouse_position):
-        x,y = mouse_position
-        if(x >= self.tile_map.map_size):
-            return True
-        return False
+            if ((mouse_pos[0] > 0 and mouse_pos[0] < self.tile_map.map_size) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.map_size)): #if mouse is within the tile_map bounds
+                self.tile_map.clicked(mouse_pos)
+            elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width()) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.window.get_height())):
+                self.level_menu.clicked(mouse_pos)
 
 
 

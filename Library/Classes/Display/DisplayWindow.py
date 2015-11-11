@@ -38,6 +38,8 @@ class DisplayWindow:
             self.window.fill((255,255,255))
             self.decide_level_to_display()
 
+            self.level.window_clicked()
+
             self.clock.tick(self.frame_rate)
             pygame.display.update()
 
@@ -46,6 +48,7 @@ class DisplayWindow:
             self.level = DisplayLevel("Level01")
 
         self.level.display_tile_map()
+        self.level.display_level_menu()
 
 
 
