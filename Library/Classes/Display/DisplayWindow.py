@@ -48,7 +48,7 @@ class DisplayWindow:
             self.level = DisplayLevel("Level01")
 
         self.level.display_tile_map()
-        self.level.display_start_menu()
+        self.level.display_level_menu()
 
 
 
