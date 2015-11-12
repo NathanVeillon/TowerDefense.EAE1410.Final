@@ -18,14 +18,17 @@ class DisplayLevel:
         self.level = eval(level_file_name)()
         self.letter_map = self.level.letter_map
         self.tile_map = TileMap(self.letter_map)
-        # self.level_menu = LevelMenu()
 
         self.level_menu = LevelMenu()
+        self.tower_list = [] #List of all towers currently on the screen
+
+    def display_towers(self):
+        for tower in self.tower_list:
+            tower.display_tower()
 
     def display_tile_map(self):
         self.tile_map.display_tile_map()
 
-    #Josh method for displaying the start (tower) menu
     def display_level_menu(self):
         self.level_menu.display_start_menu()
 
@@ -34,9 +37,15 @@ class DisplayLevel:
             mouse_pos = pygame.mouse.get_pos()
 
             if ((mouse_pos[0] > 0 and mouse_pos[0] < self.tile_map.map_size) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.map_size)): #if mouse is within the tile_map bounds
-                self.tile_map.clicked(mouse_pos)
+                self.tile_map.clicked(mouse_pos)#, self.tower_list)
             elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width()) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.window.get_height())):
-                self.level_menu.clicked(mouse_pos)
+                #Returns none if player did not click on button
+                #This method is also passed the tile_size, so it can adjust the size of the tower
+                newTower = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size)
+
+                if (isinstance(newTower, BaseTower)):
+                    self.tower_list.append(newTower)
+
 
 
 
