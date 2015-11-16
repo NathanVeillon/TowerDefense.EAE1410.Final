@@ -44,7 +44,7 @@ class DisplayWindow:
             pygame.display.update()
 
     def decide_level_to_display(self):
-        if(self.level != 'Level01'):
+        if(not isinstance(self.level, DisplayLevel)):
             self.level = DisplayLevel("Level01")
 
         self.level.display_tile_map()
