@@ -25,6 +25,7 @@ class DisplayWindow:
         self.level = None
 
     def display_window(self):
+
         while True:
             for event in pygame.event.get(QUIT):
                 if event.type == QUIT:
@@ -36,6 +37,7 @@ class DisplayWindow:
 
 
             self.window.fill((255,255,255))
+
             self.decide_level_to_display()
 
             self.level.window_clicked()
@@ -49,6 +51,7 @@ class DisplayWindow:
 
         self.level.display_tile_map()
         self.level.display_level_menu()
+        self.level.display_towers()
 
 
 

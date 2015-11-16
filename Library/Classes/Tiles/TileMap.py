@@ -2,6 +2,7 @@
 # 
 # File Contributors
 #     Nathan Veillon
+#     Josh Rosen
 
 import copy
 import pygame
@@ -90,7 +91,13 @@ class TileMap():
         self.window.blit(self.map_base,(0,0))
 
     #player has clicked somewhere within the tile map
-    def clicked(self, mouse_pos):
+    def clicked(self, mouse_pos):#, tower_list):
         print("Tile map has been clicked at", mouse_pos)
+
+        #Check through the tower_list to see if any haven't been placed yet
+        #for tower in tower_list:
+        #    if (tower.placed == False):
+        #        tower.placed == True
+
 
 
