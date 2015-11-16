@@ -1,4 +1,4 @@
 .idea
-*/__pycache__/
-/Library/Classes/__pycache__/
+*.pyc
+*.pyo
 
