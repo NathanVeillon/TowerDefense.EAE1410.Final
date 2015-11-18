@@ -32,7 +32,7 @@ class DisplayWindow:
                     pygame.quit()
                     sys.exit()
 
-            if(time.time()%1000 < 990):
+            if(int(1000*time.clock())%1000 > 983):
                 pygame.event.clear()
 
 

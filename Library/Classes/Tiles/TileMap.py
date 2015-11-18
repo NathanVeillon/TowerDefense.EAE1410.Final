@@ -49,22 +49,24 @@ class TileMap():
         tile_map[current_x_pos][current_y_pos] =  Start(self.tile_size,previous_tile_text[1],None)
 
         while True:
+            previous_direction = previous_tile_text[1]
 
-            if(previous_tile_text[1] == 'U'):
+            if(previous_direction == 'U'):
                 current_y_pos += -1
-            elif(previous_tile_text[1] == 'D'):
+            elif(previous_direction == 'D'):
                 current_y_pos += 1
-            elif(previous_tile_text[1] == 'R'):
+            elif(previous_direction == 'R'):
                 current_x_pos += 1
-            elif(previous_tile_text[1] == 'L'):
+            elif(previous_direction == 'L'):
                 current_x_pos += -1
 
             current_tile_text = self.letter_map[current_y_pos][current_x_pos]
+            current_direction = current_tile_text[1]
             if(current_tile_text[0]=='E'):
-                tile_map[current_x_pos][current_y_pos] = End(self.tile_size,current_tile_text[1],previous_tile_text[1])
+                tile_map[current_x_pos][current_y_pos] = End(self.tile_size, current_direction, previous_direction)
                 break
 
-            tile_map[current_x_pos][current_y_pos] = Path(self.tile_size,current_tile_text[1],previous_tile_text[1])
+            tile_map[current_x_pos][current_y_pos] = Path(self.tile_size, current_direction, previous_direction)
             previous_tile_text = current_tile_text
 
         return tile_map
