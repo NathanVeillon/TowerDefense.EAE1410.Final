@@ -33,10 +33,9 @@ class LevelMenu():
         #Subtract the width of the tile_map (map_size) from mouse_pos to get an x-coordinate relative to the start menu panel
         level_menu_mouse_pos = (mouse_pos[0] - self.map_size, mouse_pos[1])
 
-        #Player wants to place a tower
+        #Player clicked on the spawn tower button
         if (self.base_tower_button.clicked(level_menu_mouse_pos)):
             newTower = BaseTower(tile_size - 10, mouse_pos, 30, [])
             return newTower #Return the newly created tower
         else:
-            print("Level menu has been clicked at ", mouse_pos)
-            return None
+            return None #Otherwise return nothing
