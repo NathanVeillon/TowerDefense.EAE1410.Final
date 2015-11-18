@@ -2,7 +2,7 @@
 #
 # File Contributors
 #     Nathan Veillon
-#
+#     Kathy Huang
 # Purpose:
 # Main File to run Game
 
