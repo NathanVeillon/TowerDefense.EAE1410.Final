@@ -2,8 +2,7 @@
 # 
 # File Contributors
 #     Nathan Veillon
-#     Josh Rosen
-#
+#     Joshua Rosen
 
 import pygame
 from pygame.locals import *
@@ -36,10 +35,18 @@ class DisplayLevel:
         for event in pygame.event.get(MOUSEBUTTONUP):
             mouse_pos = pygame.mouse.get_pos()
 
+            #If mouse_pos is within the tile map
             if ((mouse_pos[0] > 0 and mouse_pos[0] < self.tile_map.map_size) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.map_size)): #if mouse is within the tile_map bounds
-                self.tile_map.clicked(mouse_pos)#, self.tower_list)
+                selected_tile = self.tile_map.clicked(mouse_pos) #Gets the tile that has been clicked on
+
+                for tower in self.tower_list:
+                    if tower.placed == False: #If a tower has not been placed yet
+                        selected_tile.place_tower(tower) #Assign the tower attribute of the selected_tile
+                        break
+
+            #If mouse pos is within the level menu
             elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width()) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.window.get_height())):
-                #Returns none if player did not click on button
+                #The level_menu.clicked method returns none if player did not click on button
                 #This method is also passed the tile_size, so it can adjust the size of the tower
                 newTower = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size)
 

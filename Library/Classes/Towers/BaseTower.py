@@ -24,8 +24,6 @@ class BaseTower():
         self.image = pygame.transform.scale(self.image,self.dimension)
 
         self.radius = attack_radius
-        # self.proj_speed = something
-        # self.proj_dmg = something else
 
         self.total_enemy_wave = enemy_wave_list
         self.enemy_to_attack = self.find_first_enemy()
@@ -33,6 +31,8 @@ class BaseTower():
         self.type = 'BaseTower'
 
         self.placed = False #False if the player is still in the process of placing the tower, True otherwise
+        self.tile_surface = None #The surface of the tile that the tower has been placed upon, needed for display_tower
+                                 #  method to blit the tower upon the tile
 
     #Call this when the next enemy wave
     def get_new_wave(self, new_wave):
@@ -63,20 +63,22 @@ class BaseTower():
             attack_position = self.enemy_to_attack.position
             pygame.draw.line(pygame.display.get_surface(), (0, 0, 0), (self.center_position[0], self.center_position[1]), attack_position, 2)
 
-    #Blits tower onto main window
+    #Blits tower onto main window (if being placed) or onto tile surface (if already placed)
     def display_tower(self):
-        pos = self.find_pos()
-        self.window.blit(self.image, pos)
-
-    def find_pos(self):
         if (self.placed == False):
-            self.image.set_alpha(128)
-            mouse_pos = list(pygame.mouse.get_pos())
-            mouse_pos[0] -= self.dimension[0] // 2
-            mouse_pos[1] -= self.dimension[1] // 2
-            return mouse_pos
+            self.image.set_alpha(128) #Make unplaced tower transparent
+            pos = self.find_mouse_pos()
+            self.window.blit(self.image, pos)
         else:
-            self.image.set_alpha(255)
+            self.image.set_alpha(255) #Make placed tower opaque
+            tile_size = (self.tile_surface.get_width(), self.tile_surface.get_height())
 
-            #Tower has been placed, return tile coordinates?
-            return self.position
+            #Blit the tower onto the CENTER of the tile_surface
+            self.tile_surface.blit(self.image, ((tile_size[0] - self.dimension[0]) // 2, (tile_size[1] - self.dimension[1])//2))
+
+    #Returns the mouse position as the center of the tower being placed
+    def find_mouse_pos(self):
+        mouse_pos = list(pygame.mouse.get_pos())
+        mouse_pos[0] -= self.dimension[0] // 2
+        mouse_pos[1] -= self.dimension[1] // 2
+        return mouse_pos
