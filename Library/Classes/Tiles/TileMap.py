@@ -96,6 +96,15 @@ class TileMap():
     def clicked(self, mouse_pos):#, tower_list):
         print("Tile map has been clicked at", mouse_pos)
 
+        x_mouse_pos = mouse_pos[0]
+        y_mouse_pos = mouse_pos[1]
+
+        x_tile_pos = x_mouse_pos//self.tile_size
+        y_tile_pos = y_mouse_pos//self.tile_size
+
+        selected_tile = self.tile_map[x_tile_pos][y_tile_pos]
+        print(selected_tile.type)
+
         #Check through the tower_list to see if any haven't been placed yet
         #for tower in tower_list:
         #    if (tower.placed == False):
