@@ -21,6 +21,8 @@ class BaseTile:
 
         self.tower = None
 
+        self.position = (0,0) #HERE
+
     def is_path(self):
         return isinstance(self,'Path')
 
@@ -31,6 +33,7 @@ class BaseTile:
             tower.placed = True
 
             tower.tile_surface = self.surface
+            tower.position = self.position #HERE
 
 
 

@@ -9,6 +9,8 @@
 import time
 import pygame
 from pygame.locals import *
+from Library.Classes.Bullets.BaseBullet import *
+from Library.Classes.Bullets.Vector import *
 from math import sqrt
 
 class BaseTower():
@@ -23,7 +25,9 @@ class BaseTower():
         self.image = pygame.image.load(image_location).convert()
         self.image = pygame.transform.scale(self.image,self.dimension)
 
-        self.radius = attack_radius
+        self.attack_radius = attack_radius
+        self.bullet_damage = 10
+        self.bullet_speed = 5
 
         self.total_enemy_wave = enemy_wave_list
         self.enemy_to_attack = self.find_first_enemy()
@@ -34,6 +38,8 @@ class BaseTower():
         self.tile_surface = None #The surface of the tile that the tower has been placed upon, needed for display_tower
                                  #  method to blit the tower upon the tile
 
+        self.bullet_list = pygame.sprite.Group() #List of bullets that this tower generates
+
     #Call this when the next enemy wave
     def get_new_wave(self, new_wave):
         self.total_enemy_wave = new_wave
@@ -43,7 +49,7 @@ class BaseTower():
         e_pos = enemy.position
         t_pos = self.center_position
         distance = sqrt((e_pos[0] - t_pos[0])**2 + (e_pos[1] - t_pos[1])**2)
-        return (distance < self.radius)
+        return (distance < self.attack_radius)
 
     #Find the first enemy to attack
     def find_first_enemy(self):
@@ -53,28 +59,41 @@ class BaseTower():
 
         return None
 
-    #Draws a line to attack enemy
+    #Fires a bullet to attack enemy
     def attack_enemy(self):
-        if (time.clock() % 3 == 0): #Time delay for attacking
 
-            if (self.enemy_to_attack == None):
-                return None
+        #ADD THIS BACK IN LATER
+        #---------------------------
+        #if (time.clock() % 3 == 0): #Time delay for attacking
 
-            attack_position = self.enemy_to_attack.position
-            pygame.draw.line(pygame.display.get_surface(), (0, 0, 0), (self.center_position[0], self.center_position[1]), attack_position, 2)
+            #if (self.enemy_to_attack == None):
+            #    return None
+
+            #attack_position = self.enemy_to_attack.position
+        #---------------------------
+
+        attack_position = pygame.mouse.get_pos()
+
+        attack_vector = Vector.fromPoints(self.center_position, attack_position)
+        attack_vector = attack_vector.normalize()
+
+        self.bullet_list.add(BaseBullet(self.center_position, (5,5), self.bullet_speed, attack_vector, self.bullet_damage))
 
     #Blits tower onto main window (if being placed) or onto tile surface (if already placed)
     def display_tower(self):
         if (self.placed == False):
             self.image.set_alpha(128) #Make unplaced tower transparent
-            pos = self.find_mouse_pos()
-            self.window.blit(self.image, pos)
+            self.center_position = self.find_mouse_pos()
+            self.window.blit(self.image, self.center_position)
         else:
             self.image.set_alpha(255) #Make placed tower opaque
             tile_size = (self.tile_surface.get_width(), self.tile_surface.get_height())
 
-            #Blit the tower onto the CENTER of the tile_surface
+            self.center_position = (self.position[0] + tile_size[0] // 2, self.position[1] + tile_size[1] // 2)
+
+            #Blit the tower onto the CENTER of the tile_surfaces
             self.tile_surface.blit(self.image, ((tile_size[0] - self.dimension[0]) // 2, (tile_size[1] - self.dimension[1])//2))
+            self.draw_bullets()
 
     #Returns the mouse position as the center of the tower being placed
     def find_mouse_pos(self):
@@ -82,3 +101,11 @@ class BaseTower():
         mouse_pos[0] -= self.dimension[0] // 2
         mouse_pos[1] -= self.dimension[1] // 2
         return mouse_pos
+
+    def draw_bullets(self):
+        for bullet in self.bullet_list:
+            if (bullet.position[0] < 0 or bullet.position[1] < 0
+                or bullet.position[1] > self.window.get_height() or bullet.position[0] > self.window.get_width()):
+                self.bullet_list.remove(bullet) #If bullet is offscreen, remove bullet
+            else:
+                bullet.display_bullet()

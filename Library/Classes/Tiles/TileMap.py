@@ -2,7 +2,7 @@
 # 
 # File Contributors
 #     Nathan Veillon
-#     Josh Rosen
+#     Joshua Rosen
 
 import copy
 import pygame
@@ -87,6 +87,7 @@ class TileMap():
             tile_x_coord = 0
             for tile in column:
                 self.map_base.blit(tile.surface,(tile_y_coord,tile_x_coord))
+                tile.position = (tile_y_coord, tile_x_coord) #HERE
                 tile_x_coord += self.tile_size
             tile_y_coord += self.tile_size
 

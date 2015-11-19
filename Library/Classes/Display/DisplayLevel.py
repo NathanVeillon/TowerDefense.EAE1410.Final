@@ -32,6 +32,15 @@ class DisplayLevel:
         self.level_menu.display_start_menu()
 
     def window_clicked(self):
+
+        #JUST FOR TESTING SHOOTING
+        #--------------------------
+        for event in pygame.event.get(KEYDOWN):
+            if event.key == K_SPACE:
+                for tower in self.tower_list:
+                    tower.attack_enemy()
+        #------------------------
+
         for event in pygame.event.get(MOUSEBUTTONUP):
             mouse_pos = pygame.mouse.get_pos()
 
