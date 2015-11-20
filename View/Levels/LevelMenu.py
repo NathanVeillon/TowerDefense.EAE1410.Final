@@ -23,7 +23,7 @@ class LevelMenu():
         #The menu_base is the panel surface that contains all of the tower buttons
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
-        self.base_tower_button = SimpleButton(50, 150, (100, 120, 90), (0, 0, 0), "Base Tower", 25, self.menu_base, (10, 20))
+        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 20))
 
     def display_start_menu(self):
         self.base_tower_button.display_button()
