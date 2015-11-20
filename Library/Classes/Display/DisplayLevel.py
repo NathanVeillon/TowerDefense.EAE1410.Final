@@ -38,7 +38,8 @@ class DisplayLevel:
         for event in pygame.event.get(KEYDOWN):
             if event.key == K_SPACE:
                 for tower in self.tower_list:
-                    tower.attack_enemy()
+                    if tower.placed == True:
+                        tower.attack_enemy()
         #------------------------
 
         for event in pygame.event.get(MOUSEBUTTONUP):
@@ -54,7 +55,8 @@ class DisplayLevel:
                 if not (self.is_tower_being_placed()): #Only spawn a new tower if currently a tower is NOT being placed
                     #The level_menu.clicked method returns none if player did not click on a button (e.g. whitespace)
                     #This method is also passed the tile_size, so it can adjust the size of the tower according to the tile
-                    newTower = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size)
+                    #Also passed is the map_size, so the tower knows the boundary of the tile_map
+                    newTower = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size, self.tile_map.map_size)
                 else:
                     newTower = None
 
@@ -72,7 +74,7 @@ class DisplayLevel:
 
         for tower in self.tower_list:
             if tower.placed == False: #If a tower has not been placed yet
-                selected_tile.place_tower(tower) #Assign the tower attribute of the selected_tile
+                selected_tile.place_tower(tower) #Assign the tower variable of the selected_tile
                 break
 
     #Returns true if the player is in the process of placing a tower

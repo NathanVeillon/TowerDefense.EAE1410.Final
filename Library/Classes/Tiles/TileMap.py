@@ -87,7 +87,7 @@ class TileMap():
             tile_x_coord = 0
             for tile in column:
                 self.map_base.blit(tile.surface,(tile_y_coord,tile_x_coord))
-                tile.position = (tile_y_coord, tile_x_coord) #HERE
+                tile.position = (tile_y_coord, tile_x_coord) #Assigns the current tile its position variable
                 tile_x_coord += self.tile_size
             tile_y_coord += self.tile_size
 

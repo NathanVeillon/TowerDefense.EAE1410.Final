@@ -21,7 +21,7 @@ class BaseTile:
 
         self.tower = None
 
-        self.position = (0,0) #HERE
+        self.position = (0,0) #Position of the tile on the main window - is assigned in TileMap
 
     def is_path(self):
         return isinstance(self,'Path')

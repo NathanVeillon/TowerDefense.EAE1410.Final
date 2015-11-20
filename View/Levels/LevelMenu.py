@@ -29,13 +29,13 @@ class LevelMenu():
         self.base_tower_button.display_button()
         self.window.blit(self.menu_base,(self.map_size,0))
 
-    def clicked(self, mouse_pos, tile_size):
+    def clicked(self, mouse_pos, tile_size, tile_map_size):
         #Subtract the width of the tile_map (map_size) from mouse_pos to get an x-coordinate relative to the start menu panel
         level_menu_mouse_pos = (mouse_pos[0] - self.map_size, mouse_pos[1])
 
         #Player clicked on the spawn tower button
         if (self.base_tower_button.clicked(level_menu_mouse_pos)):
-            newTower = BaseTower(tile_size - 10, mouse_pos, 30, [])
+            newTower = BaseTower(tile_size - 10, mouse_pos, 30, [], tile_map_size)
             return newTower #Return the newly created tower
         else:
             return None #Otherwise return nothing

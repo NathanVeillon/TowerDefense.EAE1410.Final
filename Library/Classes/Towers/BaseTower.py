@@ -15,11 +15,10 @@ from math import sqrt
 
 class BaseTower():
 
-    #tower_size should be equal to tile_size
-    def __init__(self, tower_size, position, attack_radius, enemy_wave_list, image_location='Library/Assets/Towers/BaseTower.png'):
+    def __init__(self, tower_size, position, attack_radius, enemy_wave_list, tile_map_size, image_location='Library/Assets/Towers/BaseTower.png'):
         self.window = pygame.display.get_surface()
-        self.position = position
-        self.dimension = (tower_size, tower_size)
+        self.position = position #When the tower is placed, this position is set to the corresponding tile's position
+        self.dimension = (tower_size, tower_size) #tower_size should be equal to tile_size
         self.center_position = (self.position[0] + self.dimension[0] // 2, self.position[1] + self.dimension[1] // 2)
 
         self.image = pygame.image.load(image_location).convert()
@@ -33,6 +32,8 @@ class BaseTower():
         self.enemy_to_attack = self.find_first_enemy()
 
         self.type = 'BaseTower'
+
+        self.tile_map_size = tile_map_size - 5 #The size of the tile_map, for removing bullets if they leave it
 
         self.placed = False #False if the player is still in the process of placing the tower, True otherwise
         self.tile_surface = None #The surface of the tile that the tower has been placed upon, needed for display_tower
@@ -87,12 +88,15 @@ class BaseTower():
             self.window.blit(self.image, self.center_position)
         else:
             self.image.set_alpha(255) #Make placed tower opaque
+
             tile_size = (self.tile_surface.get_width(), self.tile_surface.get_height())
 
+            #Assigns the center_position to the center of the tile (thus the center of the tower, visually)
             self.center_position = (self.position[0] + tile_size[0] // 2, self.position[1] + tile_size[1] // 2)
 
-            #Blit the tower onto the CENTER of the tile_surfaces
+            #Blit the tower onto the CENTER of the tile_surface, coordinates are relative to the tile
             self.tile_surface.blit(self.image, ((tile_size[0] - self.dimension[0]) // 2, (tile_size[1] - self.dimension[1])//2))
+
             self.draw_bullets()
 
     #Returns the mouse position as the center of the tower being placed
@@ -105,7 +109,7 @@ class BaseTower():
     def draw_bullets(self):
         for bullet in self.bullet_list:
             if (bullet.position[0] < 0 or bullet.position[1] < 0
-                or bullet.position[1] > self.window.get_height() or bullet.position[0] > self.window.get_width()):
-                self.bullet_list.remove(bullet) #If bullet is offscreen, remove bullet
+                or bullet.position[1] > self.tile_map_size or bullet.position[0] > self.tile_map_size):
+                self.bullet_list.remove(bullet) #If bullet goes offscreen, remove bullet
             else:
                 bullet.display_bullet()
