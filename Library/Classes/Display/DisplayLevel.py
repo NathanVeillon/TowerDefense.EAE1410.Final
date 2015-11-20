@@ -31,16 +31,19 @@ class DisplayLevel:
     def display_level_menu(self):
         self.level_menu.display_start_menu()
 
-    def window_clicked(self):
+    def update(self):
 
-        #JUST FOR TESTING SHOOTING
-        #--------------------------
-        for event in pygame.event.get(KEYDOWN):
-            if event.key == K_SPACE:
-                for tower in self.tower_list:
-                    if tower.placed == True:
-                        tower.attack_enemy()
-        #------------------------
+        ##FOR TESTING:
+        #Circles to emulate enemies on the board - solely for visual testing purposes
+        #If the circles are within the towers' attack_radius, then the towers will shoot at them
+        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (186,245), 5)
+        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (184, 27), 5)
+        #---------------------------------------------
+
+        #Tower shooting loop
+        for tower in self.tower_list:
+            if tower.placed == True:
+                tower.attack_enemy()
 
         for event in pygame.event.get(MOUSEBUTTONUP):
             mouse_pos = pygame.mouse.get_pos()

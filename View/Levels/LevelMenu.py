@@ -35,7 +35,12 @@ class LevelMenu():
 
         #Player clicked on the spawn tower button
         if (self.base_tower_button.clicked(level_menu_mouse_pos)):
-            newTower = BaseTower(tile_size - 10, mouse_pos, 30, [], tile_map_size)
+
+            #FOR TESTING:
+            #I pass the enemy list as a list of points simply for the purpose of demonstrating tower shooting
+            #I also draw these points on the window, for the purpose of demonstrating, in DisplayLevel
+            newTower = BaseTower(tile_size - 10, mouse_pos, 150, [(184, 27), (186, 245)], tile_map_size)
+
             return newTower #Return the newly created tower
         else:
             return None #Otherwise return nothing
