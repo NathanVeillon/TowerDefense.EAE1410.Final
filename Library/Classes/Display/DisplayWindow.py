@@ -2,6 +2,7 @@
 # 
 # File Contributors
 #     Nathan Veillon
+#     Joshua Rosen
 
 import time
 import sys
@@ -42,7 +43,7 @@ class DisplayWindow:
 
             self.decide_level_to_display()
 
-            self.level.window_clicked()
+            self.level.update()
 
             self.clock.tick(self.frame_rate)
             pygame.display.update()

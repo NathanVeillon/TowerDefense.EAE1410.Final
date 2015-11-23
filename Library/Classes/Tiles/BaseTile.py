@@ -21,13 +21,13 @@ class BaseTile:
 
         self.tower = None
 
-        self.position = (0,0) #HERE
+        self.position = (0,0) #Position of the tile on the main window - is assigned in TileMap
         self.middle_position = self.find_middle_position()
 
     def is_path(self):
         return isinstance(self,'Path')
 
-    def set_position(self,new_position):
+    def set_position(self,new_position): #Function added to set position so we can also set the middle position
         self.position = new_position
         self.middle_position = self.find_middle_position()
 

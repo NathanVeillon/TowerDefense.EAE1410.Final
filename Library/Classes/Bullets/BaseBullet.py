@@ -15,7 +15,7 @@ from math import *
 class BaseBullet(pygame.sprite.Sprite):
 
     def __init__(self, pos, size, speed, vector, damage, image_location='Library/Assets/Bullets/BaseBullet.png'):
-        #Call super constructor
+        #Calls the super constructor
         pygame.sprite.Sprite.__init__(self)
 
         self.size = size
@@ -29,10 +29,12 @@ class BaseBullet(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_location).convert()
         self.image = pygame.transform.scale(self.image,self.size)
 
+    #Moves the bullet and blits bullet onto the main window
     def display_bullet(self):
         self.move_bullet()
         self.window.blit(self.image, (self.position[0] - self.size[0] // 2, self.position[1] - self.size[1] // 2))
 
+    #Changes the bullet's position according to its speed and vector
     def move_bullet(self):
         newPosX = self.position[0] + (self.vector.vX * self.speed)
         newPosY = self.position[1] + (self.vector.vY * self.speed)
