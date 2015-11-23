@@ -7,6 +7,7 @@ import time
 import sys
 import pygame
 from pygame.locals import *
+from Library.Classes.Enemies.BaseEnemy import *
 from .DisplayLevel import *
 
 class DisplayWindow:
@@ -24,7 +25,9 @@ class DisplayWindow:
 
         self.level = None
 
+
     def display_window(self):
+
 
         while True:
             for event in pygame.event.get(QUIT):
@@ -34,7 +37,6 @@ class DisplayWindow:
 
             if(int(1000*time.clock())%1000 > 983):
                 pygame.event.clear()
-
 
             self.window.fill((255,255,255))
 
@@ -52,6 +54,7 @@ class DisplayWindow:
         self.level.display_tile_map()
         self.level.display_level_menu()
         self.level.display_towers()
+        self.level.display_enemy()
 
 
 

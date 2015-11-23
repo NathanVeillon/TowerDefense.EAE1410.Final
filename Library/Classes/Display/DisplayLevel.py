@@ -8,6 +8,7 @@ import pygame
 from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
+from Library.Classes.Enemies.BaseEnemy import *
 from View.StartMenu import *
 
 class DisplayLevel:
@@ -21,6 +22,9 @@ class DisplayLevel:
         self.level_menu = LevelMenu()
         self.tower_list = [] #List of all towers currently on the screen
 
+        self.enemy = BaseEnemy((16,16),1,1,'Library/Assets/Tiles/BaseTile.png')
+        self.enemy.set_enemy_tile_map(self.tile_map)
+
     def display_towers(self):
         for tower in self.tower_list:
             tower.display_tower()
@@ -30,6 +34,10 @@ class DisplayLevel:
 
     def display_level_menu(self):
         self.level_menu.display_start_menu()
+
+    def display_enemy(self):
+        self.enemy.display_enemy()
+        self.enemy.move_enemy()
 
     def window_clicked(self):
 

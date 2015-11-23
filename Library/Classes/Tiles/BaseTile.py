@@ -22,9 +22,20 @@ class BaseTile:
         self.tower = None
 
         self.position = (0,0) #HERE
+        self.middle_position = self.find_middle_position()
 
     def is_path(self):
         return isinstance(self,'Path')
+
+    def set_position(self,new_position):
+        self.position = new_position
+        self.middle_position = self.find_middle_position()
+
+    def find_middle_position(self):
+        x = self.position[0] + (self.dimension[0]//2)
+        y = self.position[1] + (self.dimension[1]//2)
+        return (x,y)
+
 
     #Place the passed tower onto the tile, assign the tile's tower attribute
     def place_tower(self, tower):
