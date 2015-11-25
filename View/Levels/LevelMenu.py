@@ -23,20 +23,24 @@ class LevelMenu():
         #The menu_base is the panel surface that contains all of the tower buttons
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
-        self.base_tower_button = SimpleButton(50, 150, (100, 120, 90), (0, 0, 0), "Base Tower", 25, self.menu_base, (10, 20))
+        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 20))
 
     def display_start_menu(self):
         self.base_tower_button.display_button()
         self.window.blit(self.menu_base,(self.map_size,0))
 
-    def clicked(self, mouse_pos, tile_size):
+    def clicked(self, mouse_pos, tile_size, tile_map_size):
         #Subtract the width of the tile_map (map_size) from mouse_pos to get an x-coordinate relative to the start menu panel
         level_menu_mouse_pos = (mouse_pos[0] - self.map_size, mouse_pos[1])
 
-        #Player wants to place a tower
+        #Player clicked on the spawn tower button
         if (self.base_tower_button.clicked(level_menu_mouse_pos)):
-            newTower = BaseTower(tile_size - 10, mouse_pos, 30, [])
+
+            #FOR TESTING:
+            #I pass the enemy list as a list of points simply for the purpose of demonstrating tower shooting
+            #I also draw these points on the window, for the purpose of demonstrating, in DisplayLevel
+            newTower = BaseTower(tile_size - 10, mouse_pos, 150, [(184, 27), (186, 245)], tile_map_size)
+
             return newTower #Return the newly created tower
         else:
-            print("Level menu has been clicked at ", mouse_pos)
-            return None
+            return None #Otherwise return nothing

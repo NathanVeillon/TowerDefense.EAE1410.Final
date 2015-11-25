@@ -2,12 +2,12 @@
 # 
 # File Contributors
 #     Nathan Veillon
-#     Josh Rosen
+#     Joshua Rosen
 
 import copy
 import pygame
 from pygame.locals import *
-from .BaseTitle import *
+from .BaseTile import *
 from .Terrain import *
 from .Path import *
 from .Start import *
@@ -87,15 +87,14 @@ class TileMap():
             tile_x_coord = 0
             for tile in column:
                 self.map_base.blit(tile.surface,(tile_y_coord,tile_x_coord))
+                tile.position = (tile_y_coord, tile_x_coord) #Assigns the current tile its position variable
                 tile_x_coord += self.tile_size
             tile_y_coord += self.tile_size
 
         self.window.blit(self.map_base,(0,0))
 
     #player has clicked somewhere within the tile map
-    def clicked(self, mouse_pos):#, tower_list):
-        print("Tile map has been clicked at", mouse_pos)
-
+    def clicked(self, mouse_pos):
         x_mouse_pos = mouse_pos[0]
         y_mouse_pos = mouse_pos[1]
 
@@ -103,12 +102,7 @@ class TileMap():
         y_tile_pos = y_mouse_pos//self.tile_size
 
         selected_tile = self.tile_map[x_tile_pos][y_tile_pos]
-        print(selected_tile.type)
-
-        #Check through the tower_list to see if any haven't been placed yet
-        #for tower in tower_list:
-        #    if (tower.placed == False):
-        #        tower.placed == True
+        return selected_tile #Return the tile that the player clicked on
 
 
 

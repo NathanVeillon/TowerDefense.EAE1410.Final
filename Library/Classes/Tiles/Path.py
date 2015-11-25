@@ -5,7 +5,7 @@
 #
 
 import random
-from .BaseTitle import *
+from .BaseTile import *
 
 class Path(BaseTile):
 

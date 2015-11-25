@@ -4,7 +4,7 @@
 #     Nathan Veillon
 #
 
-from .BaseTitle import *
+from .BaseTile import *
 
 class Terrain(BaseTile):
 
