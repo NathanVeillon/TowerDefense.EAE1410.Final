@@ -14,7 +14,8 @@ class BaseTile:
         self.tile_size = tile_size
 
         self.dimension = (tile_size,tile_size)
-        self.surface = pygame.image.load(image_location).convert()
+        self.surface = pygame.image.load(image_location).convert()#We load a different image based on what is passed
+        # through the parameters
         self.surface = pygame.transform.scale(self.surface,self.dimension)
         self.type = 'BaseTile'
         self.can_place_tower = False
