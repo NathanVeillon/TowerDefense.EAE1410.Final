@@ -33,7 +33,7 @@ class BaseTile:
             tower.placed = True
 
             tower.tile_surface = self.surface
-            tower.position = self.position #HERE
+            tower.position = self.position
 
 
 
