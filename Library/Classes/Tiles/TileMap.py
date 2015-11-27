@@ -23,17 +23,26 @@ class TileMap():
         self.letter_map = letter_map
         self.start_position = self.find_start()
         self.tile_map = self.create_tiles()
+        #Note: The Tile map is an array of all the tiles
+
+        #Ex. self.tile_map[1,4] will return the tile that is in the first column
+        # and fourth row which in this case is the End Tile
 
     def create_tiles(self):
+        # We create an array of Tiles with the [][] relating to the tiles x,y position on the map
+        # So if you want to know what the first
         tile_map = self.create_path()
+        # we create the path first
         y = 0
         for column in self.letter_map:
             x=0
             for item in column:
-                if(isinstance(tile_map[x][y],BaseTile)):
+                if isinstance(tile_map[x][y], BaseTile):
+                    # if the tile is already created we skip over it
                     x += 1
                     continue
 
+                # The only Tiles that haven't been created yet are terrain tiles
                 current_tile = Terrain(self.tile_size)
                 tile_map[x][y] = current_tile
                 x += 1
@@ -41,12 +50,17 @@ class TileMap():
         return tile_map
 
     def create_path(self):
+        # This function loops
+        #
         tile_map = copy.deepcopy(self.letter_map)
+        # we first copy the letter map so that way we know that we have the right dimensions
         current_x_pos = self.start_position[0]
         current_y_pos = self.start_position[1]
         previous_tile_text = self.letter_map[current_y_pos][current_y_pos]
 
-        tile_map[current_x_pos][current_y_pos] =  Start(self.tile_size,previous_tile_text[1],None)
+        # Starting from the start position we 'follow' the path until we create all the tiles
+
+        tile_map[current_x_pos][current_y_pos] =  Start(self.tile_size, previous_tile_text[1], None)
 
         while True:
             previous_direction = previous_tile_text[1]
@@ -62,8 +76,12 @@ class TileMap():
 
             current_tile_text = self.letter_map[current_y_pos][current_x_pos]
             current_direction = current_tile_text[1]
-            if(current_tile_text[0]=='E'):
+            # We now create the tile base off the location, note that we are passing what the current direction is
+            # and the previous direction. this is so we can decide what path tiles need to be corners and if we need
+            # to rotate the path image.
+            if current_tile_text[0]=='E':
                 tile_map[current_x_pos][current_y_pos] = End(self.tile_size, current_direction, previous_direction)
+                #Exit the loop when we reach the end tile
                 break
 
             tile_map[current_x_pos][current_y_pos] = Path(self.tile_size, current_direction, previous_direction)
@@ -76,8 +94,8 @@ class TileMap():
         for column in self.letter_map:
             x=0
             for item in column:
-                if(item[0] == 'S'):
-                    return (x,y)
+                if item[0] == 'S':
+                    return (x, y)
                 x += 1
             y += 1
 
@@ -86,12 +104,14 @@ class TileMap():
         for column in self.tile_map:
             tile_x_coord = 0
             for tile in column:
-                self.map_base.blit(tile.surface,(tile_y_coord,tile_x_coord))
+                #Loop through the tiles in tile map bilting them on the map base surface
+                self.map_base.blit(tile.surface, (tile_y_coord, tile_x_coord))
                 tile.position = (tile_y_coord, tile_x_coord) #Assigns the current tile its position variable
                 tile_x_coord += self.tile_size
             tile_y_coord += self.tile_size
 
-        self.window.blit(self.map_base,(0,0))
+        self.window.blit(self.map_base, (0,0))
+
 
     #player has clicked somewhere within the tile map
     def clicked(self, mouse_pos):
