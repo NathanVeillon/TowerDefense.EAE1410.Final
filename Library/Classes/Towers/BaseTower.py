@@ -43,7 +43,7 @@ class BaseTower():
 
         self.timer = 0 #Time delay for attacking
 
-    #Call this when the next enemy wave
+    #Set the enemy_wave to the next wave in the list
     def get_new_wave(self, new_wave):
         self.enemy_wave = new_wave
 
@@ -87,7 +87,7 @@ class BaseTower():
     def display_tower(self):
         if (self.placed == False):
             self.image.set_alpha(128) #Make unplaced tower transparent
-            self.center_position = self.find_mouse_pos()
+            self.center_position = self.find_centered_mouse_pos()
             self.window.blit(self.image, self.center_position)
         else:
             self.image.set_alpha(255) #Make placed tower opaque
@@ -104,7 +104,7 @@ class BaseTower():
 
 
     #Returns the mouse position as the center of the tower being placed
-    def find_mouse_pos(self):
+    def find_centered_mouse_pos(self):
         mouse_pos = list(pygame.mouse.get_pos())
         mouse_pos[0] -= self.dimension[0] // 2
         mouse_pos[1] -= self.dimension[1] // 2

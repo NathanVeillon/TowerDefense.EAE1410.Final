@@ -48,35 +48,35 @@ class DisplayLevel:
         for event in pygame.event.get(MOUSEBUTTONUP):
             mouse_pos = pygame.mouse.get_pos()
 
-            #If mouse_pos is within the tile map
-            if ((mouse_pos[0] > 0 and mouse_pos[0] < self.tile_map.map_size) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.map_size)): #if mouse is within the tile_map bounds
+            #If mouse position is within the tile map
+            if ((mouse_pos[0] > 0 and mouse_pos[0] < self.tile_map.map_size)):
                 self.tile_map_click(mouse_pos)
 
             #If mouse pos is within the level menu
-            elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width()) and (mouse_pos[1] > 0 and mouse_pos[1] < self.tile_map.window.get_height())):
-
-                if not (self.is_tower_being_placed()): #Only spawn a new tower if currently a tower is NOT being placed
+            elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width())):
+                if not (self.is_tower_being_placed()):
                     #The level_menu.clicked method returns none if player did not click on a button (e.g. whitespace)
                     #This method is also passed the tile_size, so it can adjust the size of the tower according to the tile
                     #Also passed is the map_size, so the tower knows the boundary of the tile_map
-                    newTower = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size, self.tile_map.map_size)
+                    clickedObj = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size, self.tile_map.map_size)
                 else:
-                    newTower = None
+                    clickedObj = None
 
-                if (isinstance(newTower, BaseTower)):
-                    self.tower_list.append(newTower)
+                if (isinstance(clickedObj, BaseTower)): #If the player clicked on the BaseTower button
+                    self.tower_list.append(clickedObj)
                 else: #Player clicked on level menu whitespace and NOT button
-                      #So if they are in the process of placing a tower, remove that tower
-                    for tower in self.tower_list:
-                        if tower.placed == False:
-                            self.tower_list.remove(tower)
+                    self.stop_tower_placement()
 
     #Player clicked on tile map
     def tile_map_click(self, mouse_pos):
         selected_tile = self.tile_map.clicked(mouse_pos) #Gets the tile that has been clicked on
 
+        if (selected_tile.type == "Path"):
+            self.stop_tower_placement()
+            return None
+
         for tower in self.tower_list:
-            if tower.placed == False: #If a tower has not been placed yet
+            if (tower.placed == False): #If a tower has not been placed yet
                 selected_tile.place_tower(tower) #Assign the tower variable of the selected_tile
                 break
 
@@ -85,4 +85,10 @@ class DisplayLevel:
         for tower in self.tower_list:
             if (tower.placed == False):
                 return True
+
+    #If player is in the process of placing a tower, and decides against it, delete that tower
+    def stop_tower_placement(self):
+        for tower in self.tower_list:
+            if tower.placed == False:
+                self.tower_list.remove(tower)
 
