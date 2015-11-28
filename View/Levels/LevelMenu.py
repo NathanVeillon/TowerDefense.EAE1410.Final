@@ -2,6 +2,7 @@
 #
 # File Contributors
 #     Joshua Rosen
+#     Nathan Veillon
 #
 # Purpose:
 # Panel on the right hand side of the window for containing
@@ -14,8 +15,10 @@ from Library.Classes.Towers.BaseTower import *
 
 class LevelMenu():
 
-    def __init__(self):
+    def __init__(self, level_display):
         self.window = pygame.display.get_surface()
+
+        self.level_display = level_display
 
         #The size of the tile map (the tile map is a square - this value is both the width and the height)
         self.map_size = self.window.get_height()
@@ -24,9 +27,11 @@ class LevelMenu():
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 20))
+        self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 90))
 
     def display_start_menu(self):
         self.base_tower_button.display_button()
+        self.next_wave_button.display_button()
         self.window.blit(self.menu_base,(self.map_size,0))
 
     def clicked(self, mouse_pos, tile_size, tile_map_size):
@@ -39,8 +44,12 @@ class LevelMenu():
             #FOR TESTING:
             #I pass the enemy list as a list of points simply for the purpose of demonstrating tower shooting
             #I also draw these points on the window, for the purpose of demonstrating, in DisplayLevel
-            newTower = BaseTower(tile_size - 10, mouse_pos, 150, [(184, 27), (186, 245)], tile_map_size)
+            newTower = BaseTower(tile_size - 10, mouse_pos, 150, self.level_display.current_enemy_wave, tile_map_size)
 
             return newTower #Return the newly created tower
+        elif(self.next_wave_button.clicked(level_menu_mouse_pos)):
+            self.level_display.next_enemy_wave()
+            print(level_menu_mouse_pos)
+
         else:
             return None #Otherwise return nothing

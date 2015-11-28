@@ -15,3 +15,10 @@ class Level01:
         ['  ','PU','  ','  ','  ','PD','PL','PL','PL','  '],
         ['  ','PU','PL','PL','PL','PL','  ','  ','  ','  ']
          ]
+
+        self.enemy_waves = [
+            {'BaseEnemy':25},
+            {'BaseEnemy':25},
+            {'BaseEnemy':25},
+            {'BaseEnemy':25}
+        ]

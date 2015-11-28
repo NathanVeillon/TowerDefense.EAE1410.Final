@@ -9,21 +9,32 @@ from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
 from Library.Classes.Enemies.BaseEnemy import *
+from Library.Classes.Enemies.EnemyWave import *
 from View.StartMenu import *
 
 class DisplayLevel:
 
     def __init__(self,level_file_name):
+        self.level_display = self
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
         self.letter_map = self.level.letter_map
         self.tile_map = TileMap(self.letter_map)
 
-        self.level_menu = LevelMenu()
+        self.text_enemy_waves = self.level.enemy_waves
+        self.current_enemy_wave = EnemyWave(self.tile_map,{})
+        self.current_wave_number = 0
+        self.total_wave_number = len(self.text_enemy_waves)
+
+        self.level_menu = LevelMenu(self.level_display)
         self.tower_list = [] #List of all towers currently on the screen
 
-        self.enemy = BaseEnemy((16,16),1,1,'Library/Assets/Tiles/BaseTile.png')
-        self.enemy.set_enemy_tile_map(self.tile_map)
+        self.enemy = BaseEnemy(self.tile_map)
+
+    def next_enemy_wave(self):
+        if(self.current_wave_number != self.total_wave_number):
+            self.current_wave_number += 1
+            self.current_enemy_wave.change_text_wave(self.text_enemy_waves[self.current_wave_number-1])
 
     def display_towers(self):
         for tower in self.tower_list:
@@ -35,9 +46,9 @@ class DisplayLevel:
     def display_level_menu(self):
         self.level_menu.display_start_menu()
 
-    def display_enemy(self):
-        self.enemy.display_enemy()
-        self.enemy.move_enemy()
+    def display_enemies(self):
+        self.current_enemy_wave.spawn_enemy()
+        self.current_enemy_wave.display_enemies()
 
     def window_clicked(self):
         pass

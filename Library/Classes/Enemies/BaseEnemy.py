@@ -2,8 +2,9 @@
 # 
 # File Contributors
 #     Nathan Veillon
+#     David Mirabile
 #
-# 
+#
 import math
 import pygame
 from pygame.locals import *
@@ -11,26 +12,30 @@ from Library.Classes.Tiles.Path import *
 
 class BaseEnemy(pygame.sprite.Sprite):
 
-    def __init__(self,dimensions,speed,health,image_location='Library/Assets/Enemies/BaseEnemy.png'):
+    def __init__(self, tile_map, speed=1, health=50, image_location='Library/Assets/Enemies/BaseEnemy.png'):
         pygame.sprite.Sprite.__init__(self)
 
         self.window = pygame.display.get_surface()
 
-        self.dimensions = dimensions
+        self.tile_map = tile_map
+
+        tile_size = self.tile_map.tile_size
+        start_position = self.tile_map.start_position
+
+        self.dimensions = (tile_size//3, tile_size//3)
         self.speed = speed
         self.total_health = health
         self.current_health = health
-        self.position = (50,50)
+        self.position = ((start_position[0]*tile_size)+(tile_size//2),(start_position[1]*tile_size)+(tile_size//2))
         self.blit_position = self.find_blit_position()
 
-        self.image = pygame.Surface(dimensions, flags=SRCALPHA, depth=32)
+        self.image = pygame.Surface(self.dimensions, flags=SRCALPHA, depth=32)
 
         self.enemy_surface = pygame.image.load(image_location).convert_alpha()
-        self.enemy_surface = pygame.transform.scale(self.enemy_surface, dimensions)
+        self.enemy_surface = pygame.transform.scale(self.enemy_surface, self.dimensions)
 
         self.rect = self.image.get_rect()
 
-        self.tile_map = None
         self.current_tile = None
         self.past_center = False
 
