@@ -19,28 +19,41 @@ from random import randint
 class newEnemy:
 
     def __init__(self, pos, surf, speed, health, tileSize, image):
+        ## position information
         self.pos = pos
-        self.SURF = surf
-        self.SPEED = speed
         self.TILESIZE = tileSize
+        self.truePositionY = pos[1] * self.TILESIZE
+        self.truePositionX = pos[0] * self.TILESIZE
+        self.SPEED = speed
+
+        self.SURF = surf
         self.health = health
-        self.change = self.SPEED
         self.feed = False
 
+        self.YDIRECTION = False
+        if self.SPEED[0] ==0:
+            self.YDIRECTION = True
         self.IMAGE = image
 
-    ## Checks to see if the enemy has reached the next tile, and then...
+    ## Moves the enemy, then checks to see if the enemy has reached the next tile
     ## if the enemy has reached the next tile, requests new info
-    ## BUGGED NEEDS FIXING
-    ## BUGGED NEEDS FIXING
-    ## BUGGED NEEDS FIXING
     def __moveEnemy(self):
-        if (self.pos % self.TILESIZE < self.SPEED):
-            self.change = self.POS % self.TILESIZE
-            self.feed = True
 
-        self.pos += self.change
-        self.change = self.SPEED
+        ## changes position according to speed
+        self.truePositionX += self.SPEED[0]
+        self.truePositionY += self.SPEED[1]
+
+        ## Checks to see if enemy is within 1 tick of the next tile
+        if self.YDIRECTION:
+            if self.truePositionY % self.SPEED[1] < abs(self.SPEED[1]):
+                self.SPEED[1] = self.truePositionY % self.SPEED[1]
+                self.feed = True
+
+        else:
+            if self.truePositionX % self.SPEED[0] < abs(self.SPEED[0]):
+                self.SPEED[0] = self.truePositionX % self.SPEED[0]
+                self.feed = True
+
 
     ## this function will be called by the Enemy Wave class to see if an enemy needs new information.
     ## if it returns true, the enemy wave will feed it more info.
@@ -63,7 +76,7 @@ class newEnemy:
     ## displays the enemy.
     def disp_enemy(self):
         __moveEnemy()
-        self.SURF.blit(IMAGE, pos)
+        self.SURF.blit(IMAGE, (truePositionX, truePositionY))
 
 
 
