@@ -1,4 +1,4 @@
-#BaseEnemy.py
+﻿#BaseEnemy.py
 # 
 # File Contributors
 #     Nathan Veillon
@@ -115,7 +115,3 @@ class BaseEnemy(pygame.sprite.Sprite):
     def display_enemy(self):
         self.blit_position = self.find_blit_position()
         self.window.blit(self.enemy_surface,self.blit_position)
-
-
-
-

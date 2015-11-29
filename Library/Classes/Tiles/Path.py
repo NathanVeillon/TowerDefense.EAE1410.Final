@@ -13,12 +13,15 @@ class Path(BaseTile):
 
     def __init__(self,tile_size,current_direction,previous_direction=None,type='Path'):
         self.current_direction = current_direction
+
+        # if no previous direction is specified the previous direction defaults to the current direction
         if(previous_direction):
             self.previous_direction = previous_direction
         else:
             self.previous_direction = current_direction
         self.type = type
 
+        # Have to decide what image to use, and is purely visual
         image_location = self.select_correct_image()
 
         BaseTile.__init__(self,tile_size,image_location)
@@ -29,6 +32,7 @@ class Path(BaseTile):
 
     def find_orientation(self):
         orientation = 0
+        # checks that it isn't rotating a corner piece
         if(self.previous_direction == self.current_direction):
             if(self.current_direction == 'R'):
                 orientation = 0
