@@ -43,6 +43,8 @@ class BaseTower():
 
         self.timer = 0 #Time delay for attacking
 
+        self.cost = 50 #How much it costs for the player to purchase this tower
+
     #Set the enemy_wave to the next wave in the list
     def get_new_wave(self, new_wave):
         self.enemy_wave = new_wave

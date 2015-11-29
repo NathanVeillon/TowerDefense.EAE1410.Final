@@ -9,10 +9,13 @@ from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
 from View.StartMenu import *
+from Library.Classes.PlayerModel import *
 
 class DisplayLevel:
 
     def __init__(self,level_file_name):
+        self.player = PlayerModel(500) #Player starts with 500 dollars
+
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
         self.letter_map = self.level.letter_map
@@ -29,7 +32,7 @@ class DisplayLevel:
         self.tile_map.display_tile_map()
 
     def display_level_menu(self):
-        self.level_menu.display_start_menu()
+        self.level_menu.display_start_menu(self.player.wallet)
 
     def update(self):
 
@@ -62,7 +65,8 @@ class DisplayLevel:
                 else:
                     clickedObj = None
 
-                if (isinstance(clickedObj, BaseTower)): #If the player clicked on the BaseTower button
+                #If the player clicked on the BaseTower button AND can afford a BaseTower
+                if (isinstance(clickedObj, BaseTower) and self.player.wallet >= clickedObj.cost):
                     self.tower_list.append(clickedObj)
                 else: #Player clicked on level menu whitespace and NOT button
                     self.stop_tower_placement()
@@ -78,6 +82,7 @@ class DisplayLevel:
         for tower in self.tower_list:
             if (tower.placed == False): #If a tower has not been placed yet
                 selected_tile.place_tower(tower) #Assign the tower variable of the selected_tile
+                self.player.wallet -= tower.cost
                 break
 
     #Returns true if the player is in the process of placing a tower
