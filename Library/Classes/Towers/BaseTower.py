@@ -14,6 +14,7 @@ from Library.Classes.Bullets.Vector import *
 from math import *
 
 class BaseTower():
+    cost = 50 #Static instance variable
 
     def __init__(self, tower_size, position, attack_radius, enemy_wave_list, tile_map_size, image_location='Library/Assets/Towers/BaseTower.png'):
         self.window = pygame.display.get_surface()

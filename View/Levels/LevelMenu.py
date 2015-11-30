@@ -26,12 +26,20 @@ class LevelMenu():
         #The menu_base is the panel surface that contains all of the tower buttons
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
-        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 20))
-        self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 90))
+        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 90))
+        self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 160))
 
-    def display_start_menu(self):
-        self.base_tower_button.display_button()
-        self.next_wave_button.display_button()
+
+    def display_start_menu(self, cur_money):
+        self.menu_base.fill((255,255,255))
+        self.base_tower_button.display_button(BaseTower.cost)
+        self.next_wave_button.display_button(0)
+
+        cash_font = pygame.font.SysFont("Cambria", 80)
+        self.wallet_surf = cash_font.render("Money: " + str(cur_money), True, (25, 60, 80), None)
+        self.wallet_surf = pygame.transform.scale(self.wallet_surf, (110, 50))
+
+        self.menu_base.blit(self.wallet_surf, (30, 15))
         self.window.blit(self.menu_base,(self.map_size,0))
 
     def clicked(self, mouse_pos, tile_size, tile_map_size):
