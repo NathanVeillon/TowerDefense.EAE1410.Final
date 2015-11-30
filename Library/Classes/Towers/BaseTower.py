@@ -14,6 +14,7 @@ from Library.Classes.Bullets.Vector import *
 from math import *
 
 class BaseTower():
+    cost = 50 #Static instance variable
 
     def __init__(self, tower_size, position, attack_radius, enemy_wave_list, tile_map_size, image_location='Library/Assets/Towers/BaseTower.png'):
         self.window = pygame.display.get_surface()
@@ -42,8 +43,6 @@ class BaseTower():
         self.bullet_list = pygame.sprite.Group() #List of bullets that this tower generates
 
         self.timer = 0 #Time delay for attacking
-
-        self.cost = 50 #How much it costs for the player to purchase this tower
 
     #Set the enemy_wave to the next wave in the list
     def get_new_wave(self, new_wave):
