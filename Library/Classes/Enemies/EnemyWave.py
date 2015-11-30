@@ -17,11 +17,14 @@ from Library.Classes.Enemies.BaseEnemy import *
 ## This class is unfinished
 class enemyWave():
 
-    def __init__(self, tileMap, tileSize, surf):
+    def __init__(self, tileMap, surf, speed, health, enemyImage):
         self.enemyList = []
         self.TILEMAP = tileMap
-        self.TILESIZE = tileSize
+        self.TILESIZE = self.TILEMAP.tile_size
+        self.IMAGE = enemyImage
         self.SURF = surf
+        self.SPEED = speed
+        self.health = health
 
     ## passes the enemy list to a function that requests it
     def getEnemyList(self):
@@ -31,7 +34,7 @@ class enemyWave():
     def newWave(self, numEnemies, speed, health, enemyImage):
         
         for i in range(numEnemies):
-            enemyList.append(newEnemy(self.TILEMAP.find_start(), self.SURF, speed, health, self.TILESIZE, enemyImage))
+            enemyList.append(newEnemy(self.TILEMAP.start_position, self.SURF, self.SPEED, self.health, self.TILESIZE, self.IMAGE))
 
     ## checks an enemies status, and if it needs new information, updates the enemy
     ## NOT FINISHED NEEDS WORK
@@ -42,6 +45,9 @@ class enemyWave():
         for enemy in enemyList:
             if(enemyList[enemy].checkFeed()):
                 enemyList[enemy].updateEnemy(speed)
+
+    def tick(self, enemiesToStart):
+        pass
 
 
 
