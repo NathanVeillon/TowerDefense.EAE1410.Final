@@ -59,7 +59,7 @@ class BaseTower():
 
     #Find the first enemy to attack
     def find_first_enemy(self):
-        for enemy in self.enemy_wave.enemies_to_display:
+        for enemy in self.enemy_wave:
             if self.enemy_within_range(enemy):
                 return enemy
 

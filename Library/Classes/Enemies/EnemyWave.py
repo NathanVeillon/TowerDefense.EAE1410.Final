@@ -21,6 +21,9 @@ class EnemyWave:
 
         self.timer = 0
 
+    def __iter__(self):
+        return self.enemies_to_display.__iter__()
+
     def change_text_wave(self, raw_new_text):
         if(raw_new_text):
             new_text_wave = raw_new_text
