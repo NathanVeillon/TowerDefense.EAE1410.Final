@@ -15,16 +15,17 @@ from random import randint
 ## This class is an individual enemy.
 ## This class will be managed by the EnemyWave class
 
-## This class is unfinished.
+
 class newEnemy:
 
-    def __init__(self, pos, surf, speed, health, tileSize, image):
+    def __init__(self, pos, surf, speed, size, health, tileSize, image):
         ## position information
         self.pos = pos
         self.TILESIZE = tileSize
         self.truePositionY = pos[1] * self.TILESIZE
         self.truePositionX = pos[0] * self.TILESIZE
         self.SPEED = speed
+        self.SIZE = size
 
         self.SURF = surf
         self.health = health
@@ -65,9 +66,12 @@ class newEnemy:
 
     def updateEnemy(self, speed):
         self.SPEED = speed
+        self.YDIRECTION = False
+        if self.SPEED[0] ==0:
+            self.YDIRECTION = True
     
     def getPosition(self):
-        return self.POS
+        return self.pos
 
     ## Damages the enemy.
     def damage_enemy(self, damage):
@@ -75,8 +79,15 @@ class newEnemy:
     
     ## displays the enemy.
     def disp_enemy(self):
-        __moveEnemy()
-        self.SURF.blit(IMAGE, (truePositionX, truePositionY))
+        self.__moveEnemy()
+        self.SURF.blit(IMAGE, self.__findBlitPosition())
+
+    ## determines where to blit the enemy to the screen
+    def __findBlitPosition(self):
+        xPosition = truePositionX - (self.SIZE//2)
+        yPosition = truePositionY - (self.SIZE//2)
+
+        return xPosition, yPosition
 
 
 
