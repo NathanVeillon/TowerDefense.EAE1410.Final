@@ -35,6 +35,9 @@ class EnemyWave():
         self.deployed_enemies = 0
         self.dead_enemies = 0
 
+    def __iter__(self):
+        return self.enemy_list.__iter__()
+
     ## passes the enemy list to a function that requests it
     def get_enemy_list(self):
         return self.enemy_list
@@ -52,11 +55,16 @@ class EnemyWave():
         for enemy in self.enemy_list:
             if(enemy.check_feed()):
                 enemy_tile_position = enemy.get_tile_position()
-                if self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]].current_direction == 'U':
+                current_tile = self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]]
+                if(current_tile.type == 'End'):
+                    self.dead_enemies += 1
+                    self.enemy_list.remove(enemy)
+                    return
+                if current_tile.current_direction == 'U':
                     speed = (0, -self.speed)
-                elif self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]].current_direction == 'D':
+                elif current_tile.current_direction == 'D':
                     speed = (0, self.speed)
-                elif self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]].current_direction == 'L':
+                elif current_tile.current_direction == 'L':
                     speed = (-self.speed, 0)
                 else:
                     speed = (self.speed, 0)

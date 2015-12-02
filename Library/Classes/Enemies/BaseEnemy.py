@@ -30,7 +30,7 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.position = (self.x_position,self.y_position)
         print(self.position)
         self.speed = speed
-        self.movement = (0,1)
+        self.movement = (0,0)
         self.size = size
 
         self.image = pygame.image.load(image_location)
@@ -38,7 +38,7 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.health = health
-        self.feed = False
+        self.feed = True
 
         self.y_direction = False
         if self.movement[0] ==0:
@@ -55,20 +55,25 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         self.current_tile_position = (floor(self.x_position/self.tile_size), floor(self.y_position/self.tile_size))
 
+        current_tile_middle_x_position = (self.current_tile_position[0]*self.tile_size)+(self.tile_size//2)
+        current_tile_middle_y_position = (self.current_tile_position[1]*self.tile_size)+(self.tile_size//2)
+
+        current_tile_middle_position = (current_tile_middle_x_position,current_tile_middle_y_position)
+
         ## Checks to see if enemy is within 1 tick of the next tile
         if self.y_direction:
-            if self.y_position % (self.tile_size//2) < abs(self.movement[1]):
-                y_movement = self.y_position % self.movement[1]
-                self.movement = (y_movement,0)
+            if abs(self.y_position - current_tile_middle_y_position) < abs(self.movement[1]):
+                self.x_position = current_tile_middle_position[0]
+                self.y_position = current_tile_middle_position[1]
                 self.feed = True
 
         else:
-            if self.x_position % (self.tile_size//2) < abs(self.movement[0]):
-                x_movement = self.x_position % self.movement[0]
-                self.movement = (x_movement,0)
+            if abs(self.x_position - current_tile_middle_x_position) < abs(self.movement[0]):
+                self.x_position = current_tile_middle_position[0]
+                self.y_position = current_tile_middle_position[1]
                 self.feed = True
 
-
+        self.position = (self.x_position,self.y_position)
 
 
     ## this function will be called by the Enemy Wave class to see if an enemy needs new information.
@@ -81,8 +86,9 @@ class BaseEnemy(pygame.sprite.Sprite):
 
     def update_enemy(self, speed):
         self.movement = speed
+        self.feed = False
         self.y_direction = False
-        if self.movement ==0:
+        if self.movement[0] ==0:
             self.y_direction = True
     
     def get_tile_position(self):

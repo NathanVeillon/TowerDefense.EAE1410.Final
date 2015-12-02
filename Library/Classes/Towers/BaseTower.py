@@ -50,8 +50,8 @@ class BaseTower():
 
     #Check to see if passed enemy is within the radius of the tower
     def enemy_within_range(self, enemy):
-        #e_pos = enemy.position
-        e_pos = enemy #Enemy is currently just a point
+        e_pos = enemy.position
+        # e_pos = enemy #Enemy is currently just a point
 
         t_pos = self.center_position
         distance = sqrt((e_pos[0] - t_pos[0])**2 + (e_pos[1] - t_pos[1])**2)
@@ -76,8 +76,8 @@ class BaseTower():
             if (self.enemy_to_attack == None):
                 return None
 
-            #attack_position = self.enemy_to_attack.position
-            attack_position = self.enemy_to_attack #Enemy is currently just a point
+            attack_position = self.enemy_to_attack.position
+            # attack_position = self.enemy_to_attack #Enemy is currently just a point
 
             attack_vector = Vector.fromPoints(self.center_position, attack_position)
             attack_vector = attack_vector.normalize()
