@@ -15,3 +15,12 @@ class Level01:
         ['  ','PU','  ','  ','  ','PD','PL','PL','PL','  '],
         ['  ','PU','PL','PL','PL','PL','  ','  ','  ','  ']
          ]
+
+        self.enemy_waves = [
+            {'num_enemies':10,'deploy_delay':10,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
+             'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
+            {'num_enemies':2,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
+             'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
+            {'num_enemies':10,'deploy_delay':10,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
+             'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
+        ]

@@ -33,6 +33,7 @@ class EnemyWave():
         self.deploy_delay = enemy_wave_info['deploy_delay']
         self.count = 0
         self.deployed_enemies = 0
+        self.dead_enemies = 0
 
     ## passes the enemy list to a function that requests it
     def get_enemy_list(self):
@@ -65,13 +66,14 @@ class EnemyWave():
     def __cull_enemies(self):
         for enemy in self.enemy_list:
             if enemy.health <= 0:
+                self.dead_enemies += 1
                 self.enemy_list.remove(enemy)
 
 
     ## one call to tick all enemies forward one more frame.
-    def tick(self, enemiesToStart):
+    def tick(self):
         self.count += 1
-        if (self.count % self.deploy_delay == 0) and (self.deployed_enemies <= self.num_enemies):
+        if (self.count % self.deploy_delay == 0) and (self.deployed_enemies < self.num_enemies):
             self.enemy_list.append(BaseEnemy(self.tile_map.start_position, self.image_location, self.speed, self.size, self.health, self.tile_size))
             self.deployed_enemies += 1
         

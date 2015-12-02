@@ -8,8 +8,12 @@ import pygame
 from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
+from Library.Classes.Enemies.EnemyWave import *
 from View.StartMenu import *
 from Library.Classes.PlayerModel import *
+
+empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
+             'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
 
 class DisplayLevel:
 
@@ -21,10 +25,26 @@ class DisplayLevel:
         self.letter_map = self.level.letter_map
         self.tile_map = TileMap(self.letter_map)
 
+        self.enemy_waves = self.level.enemy_waves
+        self.current_enemy_wave_number = 0
+        self.total_enemy_waves = len(self.enemy_waves)
+        self.current_enemy_wave = EnemyWave(self.tile_map,empty_wave)
+
         self.display_level = self
         self.level_menu = LevelMenu(self.display_level)
-
         self.tower_list = [] #List of all towers currently on the screen
+
+    def get_next_wave(self):
+        if(self.current_enemy_wave_number == self.total_enemy_waves):
+            return
+        if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
+            self.current_enemy_wave = EnemyWave(self.tile_map, self.enemy_waves[self.current_enemy_wave_number])
+            self.current_enemy_wave_number += 1
+            self.update_tower_enemies()
+
+    def update_tower_enemies(self):
+        for tower in self.tower_list:
+            tower.get_new_wave(self.current_enemy_wave.enemy_list)
 
     def display_towers(self):
         for tower in self.tower_list:
@@ -35,6 +55,9 @@ class DisplayLevel:
 
     def display_level_menu(self):
         self.level_menu.display_start_menu()
+
+    def display_enemies(self):
+        self.current_enemy_wave.tick()
 
     def update(self):
 
