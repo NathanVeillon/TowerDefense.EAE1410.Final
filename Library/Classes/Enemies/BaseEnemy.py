@@ -73,6 +73,8 @@ class BaseEnemy(pygame.sprite.Sprite):
                 self.feed = True
 
         self.position = (self.x_position,self.y_position)
+        self.rect.x = self.x_position
+        self.rect.y = self.y_position
 
 
     ## this function will be called by the Enemy Wave class to see if an enemy needs new information.
