@@ -39,7 +39,8 @@ class LevelMenu():
         self.menu_base.blit(self.wallet_surf, (30, 15))
         self.window.blit(self.menu_base,(self.map_size,0))
 
-    def clicked(self, mouse_pos):
+    def clicked(self):
+        mouse_pos = pygame.mouse.get_pos()
         tile_size = self.display_level.tile_map.tile_size
         tile_map_size = self.display_level.tile_map.map_size
 
