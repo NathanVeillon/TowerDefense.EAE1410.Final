@@ -61,7 +61,8 @@ class DisplayLevel:
             for e in self.current_enemy_wave.enemies_to_display:
                     for b in tower.bullet_list:
                         if (pygame.sprite.collide_rect(e, b)):
-                            print("hit")
+                            print(pygame.sprite.collide_rect(e, b))
+                            print(e.position)
                             tower.bullet_list.remove(b)
 
     def update(self):
@@ -69,8 +70,7 @@ class DisplayLevel:
         ##FOR TESTING:
         #Circles to emulate enemies on the board - solely for visual testing purposes
         #If the circles are within the towers' attack_radius, then the towers will shoot at them
-        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (186,245), 5)
-        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (184, 27), 5)
+        self.check_collide()
         #---------------------------------------------
 
         #Tower shooting loop

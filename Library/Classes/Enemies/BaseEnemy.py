@@ -1,4 +1,4 @@
-﻿#BaseEnemy.py
+#BaseEnemy.py
 # 
 # File Contributors
 #     Nathan Veillon
@@ -12,7 +12,7 @@ from Library.Classes.Tiles.Path import *
 
 class BaseEnemy(pygame.sprite.Sprite):
 
-    def __init__(self, tile_map, speed=1, health=50, image_location='Library/Assets/Enemies/BaseEnemy.png'):
+    def __init__(self, tile_map, speed=1, health=50, dimensions=None,image_location='Library/Assets/Enemies/BaseEnemy.png'):
         pygame.sprite.Sprite.__init__(self)
 
         self.window = pygame.display.get_surface()
@@ -21,27 +21,33 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         tile_size = self.tile_map.tile_size
         start_position = self.tile_map.start_position
+        if(dimensions):
+            self.dimensions = dimensions
+        else:
+            self.dimensions = (tile_size//3, tile_size//3)
 
-        self.dimensions = (tile_size//3, tile_size//3)
+        self.image = pygame.image.load(image_location).convert_alpha()
+        self.image = pygame.transform.scale(self.image, self.dimensions)
+
+        self.enemy_surface = self.image
+
+        self.rect = self.image.get_rect()
+
         self.speed = speed
         self.total_health = health
         self.current_health = health
         self.position = ((start_position[0]*tile_size)+(tile_size//2),(start_position[1]*tile_size)+(tile_size//2))
         self.blit_position = self.find_blit_position()
 
-        self.image = pygame.Surface(self.dimensions, flags=SRCALPHA, depth=32)
-        self.image = pygame.transform.scale(self.image, self.dimensions)
-
-        self.enemy_surface = pygame.image.load(image_location).convert_alpha()
-        self.enemy_surface = pygame.transform.scale(self.enemy_surface, self.dimensions)
-
-        self.rect = self.image.get_rect()
-
         self.current_tile = None
         self.past_center = False
 
     def find_blit_position(self):
-        return (self.position[0]-(self.dimensions[0]//2), self.position[1]-(self.dimensions[1]//2))
+        blit_x = self.position[0]-(self.dimensions[0]//2)
+        blit_y = self.position[1]-(self.dimensions[1]//2)
+        self.rect.x = blit_x
+        self.rect.y = blit_y
+        return (blit_x, blit_y)
 
     def set_enemy_tile_map(self,tile_map):
         self.tile_map = tile_map

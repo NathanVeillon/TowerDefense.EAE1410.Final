@@ -41,3 +41,6 @@ class BaseBullet(pygame.sprite.Sprite):
         newPosX = self.position[0] + (self.vector.vX * self.speed)
         newPosY = self.position[1] + (self.vector.vY * self.speed)
         self.position = (newPosX, newPosY)
+
+        self.rect.x = self.position[0] - self.size[0] // 2
+        self.rect.y = self.position[1] - self.size[1] // 2
