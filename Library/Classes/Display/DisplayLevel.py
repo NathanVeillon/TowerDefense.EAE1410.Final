@@ -34,7 +34,7 @@ class DisplayLevel:
         self.tile_map.display_tile_map()
 
     def display_level_menu(self):
-        self.level_menu.display_start_menu(self.player.wallet)
+        self.level_menu.display_start_menu()
 
     def update(self):
 

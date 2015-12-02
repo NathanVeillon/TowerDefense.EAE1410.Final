@@ -28,12 +28,12 @@ class LevelMenu():
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
 
-    def display_start_menu(self, cur_money):
+    def display_start_menu(self):
         self.menu_base.fill((255,255,255))
         self.base_tower_button.display_button(BaseTower.cost)
 
         cash_font = pygame.font.SysFont("Cambria", 80)
-        self.wallet_surf = cash_font.render("Money: " + str(cur_money), True, (25, 60, 80), None)
+        self.wallet_surf = cash_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
         self.wallet_surf = pygame.transform.scale(self.wallet_surf, (110, 50))
 
         self.menu_base.blit(self.wallet_surf, (30, 15))
