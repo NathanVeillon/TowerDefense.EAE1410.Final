@@ -28,7 +28,6 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.x_position = current_tile_position[0] * self.tile_size + (self.tile_size//2)
         self.y_position = current_tile_position[1] * self.tile_size + (self.tile_size//2)
         self.position = (self.x_position,self.y_position)
-        print(self.position)
         self.speed = speed
         self.movement = (0,0)
         self.size = size
