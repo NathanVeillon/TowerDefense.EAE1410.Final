@@ -21,7 +21,9 @@ class DisplayLevel:
         self.letter_map = self.level.letter_map
         self.tile_map = TileMap(self.letter_map)
 
-        self.level_menu = LevelMenu()
+        self.display_level = self
+        self.level_menu = LevelMenu(self.display_level)
+
         self.tower_list = [] #List of all towers currently on the screen
 
     def display_towers(self):
@@ -32,7 +34,7 @@ class DisplayLevel:
         self.tile_map.display_tile_map()
 
     def display_level_menu(self):
-        self.level_menu.display_start_menu(self.player.wallet)
+        self.level_menu.display_start_menu()
 
     def update(self):
 
@@ -59,9 +61,7 @@ class DisplayLevel:
             elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width())):
                 if not (self.is_tower_being_placed()):
                     #The level_menu.clicked method returns none if player did not click on a button (e.g. whitespace)
-                    #This method is also passed the tile_size, so it can adjust the size of the tower according to the tile
-                    #Also passed is the map_size, so the tower knows the boundary of the tile_map
-                    clickedObj = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size, self.tile_map.map_size)
+                    clickedObj = self.level_menu.clicked()
                 else:
                     clickedObj = None
 
@@ -81,8 +81,9 @@ class DisplayLevel:
 
         for tower in self.tower_list:
             if (tower.placed == False): #If a tower has not been placed yet
+                if (selected_tile.tower == None):
+                    self.player.wallet -= tower.cost
                 selected_tile.place_tower(tower) #Assign the tower variable of the selected_tile
-                self.player.wallet -= tower.cost
                 break
 
     #Returns true if the player is in the process of placing a tower
