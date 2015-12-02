@@ -64,10 +64,9 @@ class enemyWave():
 
     ## kills enemies that have no health
     def __cullEnemies(self):
-        for enemy in range(len(self.enemyList)):
+        for enemy in self.enemyList:
             if self.enemyList[enemy].health <= 0:
                 del self.enemyList[enemy]
-                enemy -= 1
 
 
     ## one call to tick all enemies forward one more frame.
