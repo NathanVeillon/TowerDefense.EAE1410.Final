@@ -30,12 +30,14 @@ class LevelMenu():
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
+        self.new_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/StartWave_Button.png', self.menu_base, (10, self.window.get_height() - 75))
 
     def display_start_menu(self):
         self.menu_base.fill((255,255,255))
 
         self.base_tower_button.display_button(BaseTower.cost)
         self.next_wave_button.display_button(0)
+        self.new_wave_button.display_button()
 
         cash_font = pygame.font.SysFont("Cambria", 80)
         self.wallet_surf = cash_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
@@ -88,7 +90,7 @@ class LevelMenu():
             newTower = BaseTower(tile_size - 10, mouse_pos, 150, self.display_level.current_enemy_wave, tile_map_size)
 
             return newTower #Return the newly created tower
-        elif(self.next_wave_button.clicked(level_menu_mouse_pos)):
+        elif(self.next_wave_button.clicked(level_menu_mouse_pos) or self.new_wave_button.clicked(level_menu_mouse_pos)):
             self.display_level.get_next_wave()
         else:
             return None #Otherwise return nothing
