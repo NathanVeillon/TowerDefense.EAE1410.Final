@@ -30,6 +30,7 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.blit_position = self.find_blit_position()
 
         self.image = pygame.Surface(self.dimensions, flags=SRCALPHA, depth=32)
+        self.image = pygame.transform.scale(self.image, self.dimensions)
 
         self.enemy_surface = pygame.image.load(image_location).convert_alpha()
         self.enemy_surface = pygame.transform.scale(self.enemy_surface, self.dimensions)

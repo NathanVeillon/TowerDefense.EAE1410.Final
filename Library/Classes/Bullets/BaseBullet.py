@@ -29,6 +29,8 @@ class BaseBullet(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_location).convert()
         self.image = pygame.transform.scale(self.image,self.size)
 
+        self.rect = self.image.get_rect() #Needs a rect attribute for collision detection
+
     #Moves the bullet and blits bullet onto the main window
     def display_bullet(self):
         self.move_bullet()
