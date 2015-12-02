@@ -61,8 +61,7 @@ class DisplayLevel:
             for e in self.current_enemy_wave.enemies_to_display:
                     for b in tower.bullet_list:
                         if (pygame.sprite.collide_rect(e, b)):
-                            print(pygame.sprite.collide_rect(e, b))
-                            print(e.position)
+                            print('hit')
                             tower.bullet_list.remove(b)
 
     def update(self):
