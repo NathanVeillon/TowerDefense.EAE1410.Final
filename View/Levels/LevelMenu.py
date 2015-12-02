@@ -27,10 +27,12 @@ class LevelMenu():
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
+        self.new_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/StartWave_Button.png', self.menu_base, (10, self.window.get_height() - 75))
 
     def display_start_menu(self):
         self.menu_base.fill((255,255,255))
         self.base_tower_button.display_button(BaseTower.cost)
+        self.new_wave_button.display_button()
 
         cash_font = pygame.font.SysFont("Cambria", 80)
         self.wallet_surf = cash_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
