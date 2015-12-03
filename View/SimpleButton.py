@@ -29,8 +29,13 @@ class SimpleButton:
         return within_bounds
 
     #Blits button onto surface
-    def display_button(self):
+    def display_button(self, cost=0):
         self.surf.blit(self.image, self.pos)
+
+        if (cost != 0):
+            self.text = pygame.font.SysFont("Cambria", 96).render("Cost: $" + str(cost), True, (25, 60, 80), None)
+            self.text = pygame.transform.scale(self.text, (100, 20))
+            self.image.blit(self.text, (20, self.dimension[1] - 20))
 
 
 

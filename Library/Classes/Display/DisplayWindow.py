@@ -53,6 +53,7 @@ class DisplayWindow:
         self.level.display_tile_map()
         self.level.display_level_menu()
         self.level.display_towers()
+        self.level.display_enemies()
 
 
 

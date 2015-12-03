@@ -8,18 +8,43 @@ import pygame
 from pygame.locals import *
 from View.Levels.ImportLevels import *
 from Library.Classes.Tiles.TileMap import *
+from Library.Classes.Enemies.EnemyWave import *
 from View.StartMenu import *
+from Library.Classes.PlayerModel import *
+
+empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
+             'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
 
 class DisplayLevel:
 
     def __init__(self,level_file_name):
+        self.player = PlayerModel(500) #Player starts with 500 dollars
+
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
         self.letter_map = self.level.letter_map
         self.tile_map = TileMap(self.letter_map)
 
-        self.level_menu = LevelMenu()
+        self.enemy_waves = self.level.enemy_waves
+        self.current_enemy_wave_number = 0
+        self.total_enemy_waves = len(self.enemy_waves)
+        self.current_enemy_wave = EnemyWave(self.tile_map,empty_wave)
+
+        self.display_level = self
+        self.level_menu = LevelMenu(self.display_level)
         self.tower_list = [] #List of all towers currently on the screen
+
+    def get_next_wave(self):
+        if(self.current_enemy_wave_number == self.total_enemy_waves):
+            return
+        if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
+            self.current_enemy_wave = EnemyWave(self.tile_map, self.enemy_waves[self.current_enemy_wave_number])
+            self.current_enemy_wave_number += 1
+            self.update_tower_enemies()
+
+    def update_tower_enemies(self):
+        for tower in self.tower_list:
+            tower.get_new_wave(self.current_enemy_wave.enemy_list)
 
     def display_towers(self):
         for tower in self.tower_list:
@@ -31,14 +56,20 @@ class DisplayLevel:
     def display_level_menu(self):
         self.level_menu.display_start_menu()
 
+    def display_enemies(self):
+        self.current_enemy_wave.tick()
+
+    def check_collide(self):
+        for tower in self.tower_list:
+            for e in self.current_enemy_wave:
+                    for b in tower.bullet_list:
+                        if (pygame.sprite.collide_rect(e, b)):
+                            e.damage_enemy(tower.bullet_damage)
+                            tower.bullet_list.remove(b)
+
     def update(self):
 
-        ##FOR TESTING:
-        #Circles to emulate enemies on the board - solely for visual testing purposes
-        #If the circles are within the towers' attack_radius, then the towers will shoot at them
-        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (186,245), 5)
-        pygame.draw.circle(pygame.display.get_surface(), (145,255,255), (184, 27), 5)
-        #---------------------------------------------
+        self.check_collide()
 
         #Tower shooting loop
         for tower in self.tower_list:
@@ -56,13 +87,12 @@ class DisplayLevel:
             elif ((mouse_pos[0] > self.tile_map.map_size and mouse_pos[0] < self.tile_map.window.get_width())):
                 if not (self.is_tower_being_placed()):
                     #The level_menu.clicked method returns none if player did not click on a button (e.g. whitespace)
-                    #This method is also passed the tile_size, so it can adjust the size of the tower according to the tile
-                    #Also passed is the map_size, so the tower knows the boundary of the tile_map
-                    clickedObj = self.level_menu.clicked(mouse_pos, self.tile_map.tile_size, self.tile_map.map_size)
+                    clickedObj = self.level_menu.clicked()
                 else:
                     clickedObj = None
 
-                if (isinstance(clickedObj, BaseTower)): #If the player clicked on the BaseTower button
+                #If the player clicked on the BaseTower button AND can afford a BaseTower
+                if (isinstance(clickedObj, BaseTower) and self.player.wallet >= clickedObj.cost):
                     self.tower_list.append(clickedObj)
                 else: #Player clicked on level menu whitespace and NOT button
                     self.stop_tower_placement()
@@ -77,6 +107,8 @@ class DisplayLevel:
 
         for tower in self.tower_list:
             if (tower.placed == False): #If a tower has not been placed yet
+                if (selected_tile.tower == None):
+                    self.player.wallet -= tower.cost
                 selected_tile.place_tower(tower) #Assign the tower variable of the selected_tile
                 break
 

@@ -23,11 +23,10 @@ class Path(BaseTile):
 
         # Have to decide what image to use, and is purely visual
         image_location = self.select_correct_image()
-
-        BaseTile.__init__(self,tile_size,image_location)
-        self.type = type
         self.orientation = self.find_orientation()
-        self.surface = pygame.transform.rotate(self.surface,self.orientation)
+
+        BaseTile.__init__(self,tile_size,image_location,self.orientation)
+        self.type = type
         self.can_place_tower = False
 
     def find_orientation(self):

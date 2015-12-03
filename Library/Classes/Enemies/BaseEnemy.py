@@ -1,7 +1,8 @@
-﻿#BaseEnemy.py
+#BaseEnemy.py
 # 
 # File Contributors
-#       David Mirabile
+#     David Mirabile
+#     Nathan Veillon
 # 
 # Purpose:
 # Holds basic information about health and displaying of an enemy.
@@ -15,79 +16,98 @@ from random import randint
 ## This class is an individual enemy.
 ## This class will be managed by the EnemyWave class
 
+import pygame
+from pygame.locals import *
 
-class newEnemy:
+class BaseEnemy(pygame.sprite.Sprite):
 
-    def __init__(self, pos, surf, speed, size, health, tileSize, image):
+    def __init__(self, current_tile_position, image_location, speed, size, health, tileSize):
         ## position information
-        self.pos = pos
-        self.TILESIZE = tileSize
-        self.truePositionY = pos[1] * self.TILESIZE
-        self.truePositionX = pos[0] * self.TILESIZE
-        self.SPEED = speed
-        self.SIZE = size
+        pygame.sprite.Sprite.__init__(self)
+        self.current_tile_position = current_tile_position
+        self.tile_size = tileSize
+        self.x_position = current_tile_position[0] * self.tile_size + (self.tile_size//2)
+        self.y_position = current_tile_position[1] * self.tile_size + (self.tile_size//2)
+        self.position = (self.x_position,self.y_position)
+        self.speed = speed
+        self.movement = (0,0)
+        self.size = size
 
-        self.SURF = surf
+        self.image = pygame.image.load(image_location)
+        self.image = pygame.transform.scale(self.image, self.size)
+        self.rect = self.image.get_rect()
+
         self.health = health
-        self.feed = False
+        self.feed = True
 
-        self.YDIRECTION = False
-        if self.SPEED[0] ==0:
-            self.YDIRECTION = True
-        self.IMAGE = image
+        self.y_direction = False
+        if self.movement[0] ==0:
+            self.y_direction = True
+        self.window = pygame.display.get_surface()
 
     ## Moves the enemy, then checks to see if the enemy has reached the next tile
     ## if the enemy has reached the next tile, requests new info
-    def __moveEnemy(self):
+    def __move_enemy(self):
 
         ## changes position according to speed
-        self.truePositionX += self.SPEED[0]
-        self.truePositionY += self.SPEED[1]
+        self.x_position += self.movement[0]
+        self.y_position += self.movement[1]
+
+        self.current_tile_position = (floor(self.x_position/self.tile_size), floor(self.y_position/self.tile_size))
+
+        current_tile_middle_x_position = (self.current_tile_position[0]*self.tile_size)+(self.tile_size//2)
+        current_tile_middle_y_position = (self.current_tile_position[1]*self.tile_size)+(self.tile_size//2)
+
+        current_tile_middle_position = (current_tile_middle_x_position,current_tile_middle_y_position)
 
         ## Checks to see if enemy is within 1 tick of the next tile
-        if self.YDIRECTION:
-            if self.truePositionY % self.SPEED[1] < abs(self.SPEED[1]):
-                self.SPEED[1] = self.truePositionY % self.SPEED[1]
+        if self.y_direction:
+            if abs(self.y_position - current_tile_middle_y_position) < abs(self.movement[1]):
+                self.x_position = current_tile_middle_position[0]
+                self.y_position = current_tile_middle_position[1]
                 self.feed = True
 
         else:
-            if self.truePositionX % self.SPEED[0] < abs(self.SPEED[0]):
-                self.SPEED[0] = self.truePositionX % self.SPEED[0]
+            if abs(self.x_position - current_tile_middle_x_position) < abs(self.movement[0]):
+                self.x_position = current_tile_middle_position[0]
+                self.y_position = current_tile_middle_position[1]
                 self.feed = True
+
+        self.position = (self.x_position,self.y_position)
+        self.rect.x = self.x_position
+        self.rect.y = self.y_position
 
 
     ## this function will be called by the Enemy Wave class to see if an enemy needs new information.
     ## if it returns true, the enemy wave will feed it more info.
-    def checkFeed(self):
+    def check_feed(self):
         if (self.feed):
             return True
 
         return False
 
-    def updateEnemy(self, speed):
-        self.SPEED = speed
-        self.YDIRECTION = False
-        if self.SPEED[0] ==0:
-            self.YDIRECTION = True
+    def update_enemy(self, speed):
+        self.movement = speed
+        self.feed = False
+        self.y_direction = False
+        if self.movement[0] ==0:
+            self.y_direction = True
     
-    def getPosition(self):
-        return self.pos
+    def get_tile_position(self):
+        return self.current_tile_position
 
     ## Damages the enemy.
     def damage_enemy(self, damage):
         self.health -= damage
     
     ## displays the enemy.
-    def disp_enemy(self):
-        self.__moveEnemy()
-        self.SURF.blit(IMAGE, self.__findBlitPosition())
+    def display_enemy(self):
+        self.__move_enemy()
+        self.window.blit(self.image, self.__find_blit_position())
 
     ## determines where to blit the enemy to the screen
-    def __findBlitPosition(self):
-        xPosition = truePositionX - (self.SIZE//2)
-        yPosition = truePositionY - (self.SIZE//2)
+    def __find_blit_position(self):
+        xPosition = self.x_position - (self.size[0]//2)
+        yPosition = self.y_position - (self.size[1]//2)
 
-        return xPosition, yPosition
-
-
-
+        return (xPosition, yPosition)
