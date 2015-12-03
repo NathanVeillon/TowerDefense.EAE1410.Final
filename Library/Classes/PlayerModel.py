@@ -8,6 +8,7 @@
 
 class PlayerModel():
 
-    def __init__(self, starting_money):
+    def __init__(self, starting_money, starting_lives):
         self.wallet = starting_money
+        self.lives = starting_lives
 

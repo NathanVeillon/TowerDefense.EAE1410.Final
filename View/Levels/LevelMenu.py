@@ -32,6 +32,8 @@ class LevelMenu():
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
         #self.new_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/StartWave_Button.png', self.menu_base, (10, self.window.get_height() - 75))
 
+        self.menu_font = pygame.font.SysFont("Cambria", 80)
+
     def display_start_menu(self):
         self.menu_base.fill((255,255,255))
 
@@ -39,23 +41,29 @@ class LevelMenu():
         self.next_wave_button.display_button(0)
         #self.new_wave_button.display_button()
 
-        cash_font = pygame.font.SysFont("Cambria", 80)
-        self.wallet_surf = cash_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
-        self.wallet_surf = pygame.transform.scale(self.wallet_surf, (110, 50))
-
+        self.display_wallet()
+        self.display_lives()
         self.display_wave_info()
-
-        self.menu_base.blit(self.wallet_surf, (30, 15))
 
         self.window.blit(self.menu_base,(self.map_size,0))
 
-    def display_wave_info(self):
-        cash_font = pygame.font.SysFont("Cambria", 80)
+    def display_lives(self):
+        self.lives_surf = self.menu_font.render("Lives: " + str(self.display_level.player.lives), True, (25, 60, 80), None)
+        self.lives_surf = pygame.transform.scale(self.lives_surf, (110, 50))
 
+        self.menu_base.blit(self.lives_surf, (30, 350))
+
+    def display_wallet(self):
+        self.wallet_surf = self.menu_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
+        self.wallet_surf = pygame.transform.scale(self.wallet_surf, (110, 50))
+
+        self.menu_base.blit(self.wallet_surf, (30, 15))
+
+    def display_wave_info(self):
         current_wave_number = str(self.display_level.current_enemy_wave_number)
         total_wave_number = str(self.display_level.total_enemy_waves)
 
-        self.wave_info_surf = cash_font.render('Wave '+current_wave_number+' out of '+total_wave_number, True, (25, 60, 80), None)
+        self.wave_info_surf = self.menu_font.render('Wave '+current_wave_number+' out of '+total_wave_number, True, (25, 60, 80), None)
         self.wave_info_surf = pygame.transform.scale(self.wave_info_surf, (110, 50))
 
         current_wave = self.display_level.current_enemy_wave
@@ -66,7 +74,7 @@ class LevelMenu():
             string = ' enemies'
         enemies_remaining = str(enemies_remaining)+string
 
-        self.enemy_info_surf = cash_font.render(enemies_remaining+' remaining', True, (25, 60, 80), None)
+        self.enemy_info_surf = self.menu_font.render(enemies_remaining+' remaining', True, (25, 60, 80), None)
         self.enemy_info_surf = pygame.transform.scale(self.enemy_info_surf, (110, 40))
 
         self.menu_base.blit(self.wave_info_surf, (30, 200))
