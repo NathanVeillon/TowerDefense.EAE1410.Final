@@ -1,7 +1,8 @@
 #BaseEnemy.py
 # 
 # File Contributors
-#       David Mirabile
+#     David Mirabile
+#     Nathan Veillon
 # 
 # Purpose:
 # Holds basic information about health and displaying of an enemy.

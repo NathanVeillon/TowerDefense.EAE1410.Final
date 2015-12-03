@@ -29,6 +29,8 @@ class BaseBullet(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_location).convert()
         self.image = pygame.transform.scale(self.image,self.size)
 
+        self.rect = self.image.get_rect()
+
     #Moves the bullet and blits bullet onto the main window
     def display_bullet(self):
         self.move_bullet()
@@ -39,3 +41,6 @@ class BaseBullet(pygame.sprite.Sprite):
         newPosX = self.position[0] + (self.vector.vX * self.speed)
         newPosY = self.position[1] + (self.vector.vY * self.speed)
         self.position = (newPosX, newPosY)
+
+        self.rect.x = newPosX
+        self.rect.y = newPosY

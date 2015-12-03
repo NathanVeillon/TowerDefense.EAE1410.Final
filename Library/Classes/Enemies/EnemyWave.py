@@ -1,7 +1,8 @@
-﻿#EnemyWave.py
+#EnemyWave.py
 # 
 # File Contributors
-#       David Mirabile
+#     David Mirabile
+#     Nathan Veillon
 # 
 # Purpose:
 # Manage and construct waves of enemies.
