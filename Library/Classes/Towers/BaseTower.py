@@ -27,7 +27,7 @@ class BaseTower():
 
         self.attack_radius = attack_radius
         self.bullet_damage = 10
-        self.bullet_speed = 5
+        self.bullet_speed = 7
 
         self.enemy_wave = enemy_wave_list
         self.enemy_to_attack = None
@@ -51,7 +51,6 @@ class BaseTower():
     #Check to see if passed enemy is within the radius of the tower
     def enemy_within_range(self, enemy):
         e_pos = enemy.position
-        # e_pos = enemy #Enemy is currently just a point
 
         t_pos = self.center_position
         distance = sqrt((e_pos[0] - t_pos[0])**2 + (e_pos[1] - t_pos[1])**2)
@@ -76,8 +75,19 @@ class BaseTower():
             if (self.enemy_to_attack == None):
                 return None
 
-            attack_position = self.enemy_to_attack.position
-            # attack_position = self.enemy_to_attack #Enemy is currently just a point
+            attack_position = list(self.enemy_to_attack.position)
+            attack_position[0] += self.enemy_to_attack.size[0] // 2
+            attack_position[1] += self.enemy_to_attack.size[1] // 2
+
+            #Adjust attack position for more accuracy based on enemy movement
+            if (self.enemy_to_attack.movement[0] > 0):
+                attack_position[0] += 5 + (self.enemy_to_attack.size[0] // 2) * self.enemy_to_attack.speed
+            if (self.enemy_to_attack.movement[0] < 0):
+                attack_position[0] -= 5 + (self.enemy_to_attack.size[0] // 2) * self.enemy_to_attack.speed
+            if (self.enemy_to_attack.movement[1] > 0):
+                attack_position[1] += 5 + (self.enemy_to_attack.size[1] // 2) * self.enemy_to_attack.speed
+            if (self.enemy_to_attack.movement[1] < 0):
+                attack_position[1] -= 5 + (self.enemy_to_attack.size[1] // 2) * self.enemy_to_attack.speed
 
             attack_vector = Vector.fromPoints(self.center_position, attack_position)
             attack_vector = attack_vector.normalize()
