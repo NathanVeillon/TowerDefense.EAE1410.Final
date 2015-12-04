@@ -56,7 +56,7 @@ class TileMap():
         # we first copy the letter map so that way we know that we have the right dimensions
         current_x_pos = self.start_position[0]
         current_y_pos = self.start_position[1]
-        previous_tile_text = self.letter_map[current_y_pos][current_y_pos]
+        previous_tile_text = self.letter_map[current_y_pos][current_x_pos]
 
         # Starting from the start position we 'follow' the path until we create all the tiles
 
