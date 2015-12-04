@@ -22,23 +22,40 @@ from pygame.locals import *
 
 class BaseEnemy(pygame.sprite.Sprite):
 
-    def __init__(self, current_tile_position, image_location, speed, size, health, tileSize):
+    def __init__(self, tile_map, speed=None, health=None, size=None, image_location=None):
+        # just setting default values
+        if(speed):
+            self.speed = speed
+        else:
+            self.speed = 2
+        if(health):
+            self.health = health
+        else:
+            self.health = 15
+        if(size):
+            self.size = size
+        else:
+            self.size = (20,20)
+        if(image_location):
+            self.image_location = image_location
+        else:
+            self.image_location = 'Library\Assets\Enemies\BaseEnemy.png'
+
+
+
         ## position information
         pygame.sprite.Sprite.__init__(self)
-        self.current_tile_position = current_tile_position
-        self.tile_size = tileSize
-        self.x_position = current_tile_position[0] * self.tile_size + (self.tile_size//2)
-        self.y_position = current_tile_position[1] * self.tile_size + (self.tile_size//2)
+        self.current_tile_position = tile_map.start_position
+        self.tile_size = tile_map.tile_size
+        self.x_position = self.current_tile_position[0] * self.tile_size + (self.tile_size//2)
+        self.y_position = self.current_tile_position[1] * self.tile_size + (self.tile_size//2)
         self.position = (self.x_position,self.y_position)
-        self.speed = speed
         self.movement = (0,0)
-        self.size = size
 
-        self.image = pygame.image.load(image_location)
+        self.image = pygame.image.load(self.image_location)
         self.image = pygame.transform.scale(self.image, self.size)
         self.rect = self.image.get_rect()
 
-        self.health = health
         self.feed = True
 
         self.y_direction = False
@@ -46,7 +63,7 @@ class BaseEnemy(pygame.sprite.Sprite):
             self.y_direction = True
         self.window = pygame.display.get_surface()
 
-        self.health_total = health
+        self.health_total = self.health
         self.health_bar_total = self.size[0]
         self.health_bar = self.size[0]
 
