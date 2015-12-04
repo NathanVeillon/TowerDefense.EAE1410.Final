@@ -98,7 +98,7 @@ class LevelMenu():
             newTower = BaseTower(tile_size - 10, mouse_pos, 150, self.display_level.current_enemy_wave, tile_map_size)
 
             return newTower #Return the newly created tower
-        elif(self.next_wave_button.clicked(level_menu_mouse_pos) or self.new_wave_button.clicked(level_menu_mouse_pos)):
+        elif(self.next_wave_button.clicked(level_menu_mouse_pos)):
             self.display_level.get_next_wave()
         else:
             return None #Otherwise return nothing

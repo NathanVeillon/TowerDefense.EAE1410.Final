@@ -24,6 +24,7 @@ class DisplayWindow:
         pygame.display.set_caption(window_title)
 
         self.level = None
+        self.level_number = 1
 
     def display_window(self):
 
@@ -49,6 +50,14 @@ class DisplayWindow:
     def decide_level_to_display(self):
         if(not isinstance(self.level, DisplayLevel)):
             self.level = DisplayLevel("Level01")
+
+        if(self.level.level_finished):
+            try:
+                self.level_number +=1
+                level_string = 'Level'+'{0:0>2}'.format(self.level_number)
+                self.level = DisplayLevel(level_string)
+            except:
+                self.level = DisplayLevel("Level01")
 
         self.level.display_tile_map()
         self.level.display_level_menu()

@@ -35,11 +35,11 @@ class Path(BaseTile):
         if(self.previous_direction == self.current_direction):
             if(self.current_direction == 'R'):
                 orientation = 0
-            elif(self.current_direction == 'D'):
+            elif(self.current_direction == 'U'):
                 orientation = 90
             elif(self.current_direction == 'L'):
                 orientation = 180
-            elif(self.current_direction == 'U'):
+            elif(self.current_direction == 'D'):
                 orientation = 270
         return orientation
 

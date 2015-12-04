@@ -35,10 +35,12 @@ class DisplayLevel:
         self.level_menu = LevelMenu(self.display_level)
         self.tower_list = [] #List of all towers currently on the screen
 
+        self.level_finished = False
         self.game_over = None #Game over screen
 
     def get_next_wave(self):
         if(self.current_enemy_wave_number == self.total_enemy_waves):
+            self.check_level_finished()
             return
         if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
             self.current_enemy_wave = EnemyWave(self.tile_map, self.enemy_waves[self.current_enemy_wave_number])
@@ -69,6 +71,10 @@ class DisplayLevel:
                         if (pygame.sprite.collide_rect(e, b)):
                             e.damage_enemy(tower.bullet_damage)
                             tower.bullet_list.remove(b)
+
+    def check_level_finished(self):
+        if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
+            self.level_finished = True
 
     def update(self):
 
