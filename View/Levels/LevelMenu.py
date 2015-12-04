@@ -53,8 +53,7 @@ class LevelMenu():
         current_wave_number = str(self.display_level.current_enemy_wave_number)
         total_wave_number = str(self.display_level.total_enemy_waves)
 
-        self.wave_info_surf = self.menu_font.render('Wave '+current_wave_number+' out of '+total_wave_number, True, (25, 60, 80), None)
-        self.wave_info_surf = pygame.transform.scale(self.wave_info_surf, (110, 50))
+        self.draw_text('Wave '+current_wave_number+' out of '+total_wave_number, (30, 200))
 
         current_wave = self.display_level.current_enemy_wave
         enemies_remaining = current_wave.num_enemies-current_wave.dead_enemies
@@ -64,11 +63,7 @@ class LevelMenu():
             string = ' enemies'
         enemies_remaining = str(enemies_remaining)+string
 
-        self.enemy_info_surf = self.menu_font.render(enemies_remaining+' remaining', True, (25, 60, 80), None)
-        self.enemy_info_surf = pygame.transform.scale(self.enemy_info_surf, (110, 40))
-
-        self.menu_base.blit(self.wave_info_surf, (30, 200))
-        self.menu_base.blit(self.enemy_info_surf, (30, 250))
+        self.draw_text(enemies_remaining+' remaining', (30, 250))
 
 
     def clicked(self):
