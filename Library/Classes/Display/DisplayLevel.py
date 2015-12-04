@@ -71,7 +71,6 @@ class DisplayLevel:
                             tower.bullet_list.remove(b)
 
     def update(self):
-
         self.check_collide()
 
         #Update live counter by subtracting each enemy that reached the end
