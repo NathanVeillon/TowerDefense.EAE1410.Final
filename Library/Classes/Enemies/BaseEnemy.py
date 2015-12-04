@@ -3,6 +3,7 @@
 # File Contributors
 #     David Mirabile
 #     Nathan Veillon
+#     Joshua Rosen
 # 
 # Purpose:
 # Holds basic information about health and displaying of an enemy.
@@ -44,6 +45,10 @@ class BaseEnemy(pygame.sprite.Sprite):
         if self.movement[0] ==0:
             self.y_direction = True
         self.window = pygame.display.get_surface()
+
+        self.health_total = health
+        self.health_bar_total = self.size[0]
+        self.health_bar = self.size[0]
 
     ## Moves the enemy, then checks to see if the enemy has reached the next tile
     ## if the enemy has reached the next tile, requests new info
@@ -99,10 +104,17 @@ class BaseEnemy(pygame.sprite.Sprite):
     ## Damages the enemy.
     def damage_enemy(self, damage):
         self.health -= damage
+
+        #Adjusts health bar proportionally based on actual health value/damage taken
+        prop_dmg = damage / self.health_total
+        health_bar_dmg = self.health_bar_total * prop_dmg
+        self.health_bar -= health_bar_dmg
     
     ## displays the enemy.
     def display_enemy(self):
         self.__move_enemy()
+        pygame.draw.rect(self.window, (0, 255, 0), Rect((self.__find_blit_position()[0], self.__find_blit_position()[1] - 12),
+                                                       (self.health_bar,   5)))
         self.window.blit(self.image, self.__find_blit_position())
 
     ## determines where to blit the enemy to the screen

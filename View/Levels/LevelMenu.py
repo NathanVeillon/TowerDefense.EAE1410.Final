@@ -17,7 +17,6 @@ from Library.Classes.Towers.BaseTower import *
 class LevelMenu():
 
     def __init__(self, display_level):
-        #Change passed parameters to getting it from display_level
         self.display_level = display_level #DisplayLevel passes itself by self-reference
 
         self.window = pygame.display.get_surface()
@@ -30,7 +29,6 @@ class LevelMenu():
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
-        #self.new_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/StartWave_Button.png', self.menu_base, (10, self.window.get_height() - 75))
 
         self.menu_font = pygame.font.SysFont("Cambria", 80)
 
@@ -38,33 +36,24 @@ class LevelMenu():
         self.menu_base.fill((255,255,255))
 
         self.base_tower_button.display_button(BaseTower.cost)
-        self.next_wave_button.display_button(0)
-        #self.new_wave_button.display_button()
+        self.next_wave_button.display_button()
 
-        self.display_wallet()
-        self.display_lives()
+        self.draw_text("Lives: " + str(self.display_level.player.lives), (30, 350)) #Lives display
+        self.draw_text("Money: " + str(self.display_level.player.wallet), (30, 15)) #Wallet display
         self.display_wave_info()
 
         self.window.blit(self.menu_base,(self.map_size,0))
 
-    def display_lives(self):
-        self.lives_surf = self.menu_font.render("Lives: " + str(self.display_level.player.lives), True, (25, 60, 80), None)
-        self.lives_surf = pygame.transform.scale(self.lives_surf, (110, 50))
-
-        self.menu_base.blit(self.lives_surf, (30, 350))
-
-    def display_wallet(self):
-        self.wallet_surf = self.menu_font.render("Money: " + str(self.display_level.player.wallet), True, (25, 60, 80), None)
-        self.wallet_surf = pygame.transform.scale(self.wallet_surf, (110, 50))
-
-        self.menu_base.blit(self.wallet_surf, (30, 15))
+    def draw_text(self, text, coordinates):
+        text_surface = self.menu_font.render(text, True, (25, 60, 80), None)
+        text_surface = pygame.transform.scale(text_surface, (110, 50))
+        self.menu_base.blit(text_surface, coordinates)
 
     def display_wave_info(self):
         current_wave_number = str(self.display_level.current_enemy_wave_number)
         total_wave_number = str(self.display_level.total_enemy_waves)
 
-        self.wave_info_surf = self.menu_font.render('Wave '+current_wave_number+' out of '+total_wave_number, True, (25, 60, 80), None)
-        self.wave_info_surf = pygame.transform.scale(self.wave_info_surf, (110, 50))
+        self.draw_text('Wave '+current_wave_number+' out of '+total_wave_number, (30, 200))
 
         current_wave = self.display_level.current_enemy_wave
         enemies_remaining = current_wave.num_enemies-current_wave.dead_enemies
@@ -74,11 +63,7 @@ class LevelMenu():
             string = ' enemies'
         enemies_remaining = str(enemies_remaining)+string
 
-        self.enemy_info_surf = self.menu_font.render(enemies_remaining+' remaining', True, (25, 60, 80), None)
-        self.enemy_info_surf = pygame.transform.scale(self.enemy_info_surf, (110, 40))
-
-        self.menu_base.blit(self.wave_info_surf, (30, 200))
-        self.menu_base.blit(self.enemy_info_surf, (30, 250))
+        self.draw_text(enemies_remaining+' remaining', (30, 250))
 
 
     def clicked(self):
@@ -91,10 +76,6 @@ class LevelMenu():
 
         #Player clicked on the spawn tower button
         if (self.base_tower_button.clicked(level_menu_mouse_pos)):
-
-            #FOR TESTING:
-            #I pass the enemy list as a list of points simply for the purpose of demonstrating tower shooting
-            #I also draw these points on the window, for the purpose of demonstrating, in DisplayLevel
             newTower = BaseTower(tile_size - 10, mouse_pos, 150, self.display_level.current_enemy_wave, tile_map_size)
 
             return newTower #Return the newly created tower
