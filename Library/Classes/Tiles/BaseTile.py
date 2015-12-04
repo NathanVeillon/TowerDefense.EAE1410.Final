@@ -10,12 +10,14 @@ from pygame.locals import *
 
 class BaseTile:
 
-    def __init__(self,tile_size,image_location='Library/Assets/Tiles/BaseTile.png'):
+    def __init__(self,tile_size,image_location='Library/Assets/Tiles/BaseTile.png',orientation=0):
         self.tile_size = tile_size
 
         self.dimension = (tile_size,tile_size)
         self.surface = pygame.image.load(image_location).convert()#We load a different image based on what is passed
         # through the parameters
+        if(orientation):
+            self.surface = pygame.transform.rotate(self.surface, orientation)
         self.surface = pygame.transform.scale(self.surface,self.dimension)
         self.type = 'BaseTile'
         self.can_place_tower = False
