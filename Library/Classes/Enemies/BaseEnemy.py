@@ -113,8 +113,21 @@ class BaseEnemy(pygame.sprite.Sprite):
     ## displays the enemy.
     def display_enemy(self):
         self.__move_enemy()
-        pygame.draw.rect(self.window, (0, 255, 0), Rect((self.__find_blit_position()[0], self.__find_blit_position()[1] - 12),
+
+        #Health bar
+        GREEN = (0, 255, 0)
+        YELLOW = (255, 255, 0)
+        RED = (255, 0, 0)
+
+        cur_color = GREEN
+        if (self.health_bar <= self.health_bar_total // 2):
+            cur_color = YELLOW
+        if (self.health_bar <= self.health_bar_total // 4):
+            cur_color = RED
+        pygame.draw.rect(self.window, cur_color, Rect((self.__find_blit_position()[0], self.__find_blit_position()[1] - 12),
                                                        (self.health_bar,   5)))
+
+
         self.window.blit(self.image, self.__find_blit_position())
 
     ## determines where to blit the enemy to the screen

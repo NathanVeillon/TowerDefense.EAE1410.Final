@@ -68,6 +68,7 @@ class BaseTower():
     def attack_enemy(self):
         self.enemy_to_attack = self.find_first_enemy()
         if (self.enemy_to_attack == None):
+            self.timer = 0
             return None
 
         self.timer += 1 #Needs a time delay for attacking

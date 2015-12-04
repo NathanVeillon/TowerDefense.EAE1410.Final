@@ -79,9 +79,9 @@ class DisplayLevel:
         if (self.player.lives < 1):
             if (isinstance(self.game_over, GameOverScreen)):
                 self.game_over.display_self()
-                if (self.game_over.timer > 450):
+                if (self.game_over.timer > 400):
                     #Exit game
-                    #In the future, we should definitely make a method for proper quitting
+                    #Make a method for proper quitting
                     pygame.quit()
                     sys.exit()
             else:
