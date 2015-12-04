@@ -11,6 +11,7 @@ from Library.Classes.Tiles.TileMap import *
 from Library.Classes.Enemies.EnemyWave import *
 from View.StartMenu import *
 from Library.Classes.PlayerModel import *
+from View.GameOverScreen import *
 
 empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
              'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
@@ -18,7 +19,7 @@ empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'healt
 class DisplayLevel:
 
     def __init__(self,level_file_name):
-        self.player = PlayerModel(500) #Player starts with 500 dollars
+        self.player = PlayerModel(500, 5) #Player starts with 500 dollars and 5 lives
 
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
@@ -34,8 +35,12 @@ class DisplayLevel:
         self.level_menu = LevelMenu(self.display_level)
         self.tower_list = [] #List of all towers currently on the screen
 
+        self.level_finished = False
+        self.game_over = None #Game over screen
+
     def get_next_wave(self):
         if(self.current_enemy_wave_number == self.total_enemy_waves):
+            self.check_level_finished()
             return
         if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
             self.current_enemy_wave = EnemyWave(self.tile_map, self.enemy_waves[self.current_enemy_wave_number])
@@ -67,9 +72,26 @@ class DisplayLevel:
                             e.damage_enemy(tower.bullet_damage)
                             tower.bullet_list.remove(b)
 
-    def update(self):
+    def check_level_finished(self):
+        if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
+            self.level_finished = True
 
+    def update(self):
         self.check_collide()
+
+        #Update live counter by subtracting each enemy that reached the end
+        self.player.lives -= self.current_enemy_wave.reached_end
+        self.current_enemy_wave.reached_end = 0
+        if (self.player.lives < 1):
+            if (isinstance(self.game_over, GameOverScreen)):
+                self.game_over.display_self()
+                if (self.game_over.timer > 400):
+                    #Exit game
+                    #Make a method for proper quitting
+                    pygame.quit()
+                    sys.exit()
+            else:
+                self.game_over = GameOverScreen()
 
         #Tower shooting loop
         for tower in self.tower_list:

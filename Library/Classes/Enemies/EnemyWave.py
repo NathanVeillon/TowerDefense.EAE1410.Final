@@ -3,7 +3,8 @@
 # File Contributors
 #     David Mirabile
 #     Nathan Veillon
-# 
+#     Joshua Rosen
+#
 # Purpose:
 # Manage and construct waves of enemies.
 
@@ -36,6 +37,7 @@ class EnemyWave():
         self.count = 0
         self.deployed_enemies = 0
         self.dead_enemies = 0
+        self.reached_end = 0 #Ticks to 1 if enemy reaches the end, then is subtracted from lives and set to 0 again
 
     def __iter__(self):
         return self.enemy_list.__iter__()
@@ -61,6 +63,7 @@ class EnemyWave():
                 current_tile = self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]]
                 if(current_tile.type == 'End'):
                     self.dead_enemies += 1
+                    self.reached_end += 1
                     self.enemy_list.remove(enemy)
                     return
                 if current_tile.current_direction == 'U':
