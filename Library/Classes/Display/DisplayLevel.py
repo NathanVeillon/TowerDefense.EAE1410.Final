@@ -19,7 +19,7 @@ empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'healt
 class DisplayLevel:
 
     def __init__(self,level_file_name):
-        self.player = PlayerModel(500, 5) #Player starts with 500 dollars
+        self.player = PlayerModel(500, 5) #Player starts with 500 dollars and 5 lives
 
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
