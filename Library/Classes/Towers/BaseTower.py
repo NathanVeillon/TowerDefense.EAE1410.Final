@@ -43,6 +43,7 @@ class BaseTower():
         self.bullet_list = pygame.sprite.Group() #List of bullets that this tower generates
 
         self.timer = 0 #Time delay for attacking
+        self.attack_delay = 75
 
     #Set the enemy_wave to the next wave in the list
     def get_new_wave(self, new_wave):
@@ -72,8 +73,13 @@ class BaseTower():
             return None
 
         self.timer += 1 #Needs a time delay for attacking
-        if (self.timer == 75):
-            self.timer = 0
+        if (self.timer == self.attack_delay or self.timer == 1):
+            #This way the tower instantly fires immediately upon finding an enemy,
+            # then it waits out the delay for the next shot.
+            if (self.timer == 1):
+                pass
+            else:
+                self.timer = 2
 
             attack_position = list(self.enemy_to_attack.position)
 
