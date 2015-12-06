@@ -35,7 +35,7 @@ class BaseEnemy(pygame.sprite.Sprite):
         if(size):
             self.size = size
         else:
-            self.size = (20,20)
+            self.size = (35,35)
         if(image_location):
             self.image_location = image_location
         else:
