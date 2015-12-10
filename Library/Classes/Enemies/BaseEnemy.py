@@ -9,7 +9,6 @@
 # Holds basic information about health and displaying of an enemy.
 
 import pygame, math
-from Library.Classes.Tiles.Path import *
 from Library.Classes.Bullets.Vector import *
 from random import randint
 
@@ -67,9 +66,11 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.health_bar_total = self.size[0]
         self.health_bar = self.size[0]
 
+        self.tile_map = tile_map
+
     ## Moves the enemy, then checks to see if the enemy has reached the next tile
     ## if the enemy has reached the next tile, requests new info
-    def __move_enemy(self):
+    def move_enemy(self):
 
         ## changes position according to speed
         self.x_position += self.movement[0]
@@ -129,7 +130,7 @@ class BaseEnemy(pygame.sprite.Sprite):
     
     ## displays the enemy.
     def display_enemy(self):
-        self.__move_enemy()
+        self.move_enemy()
 
         #Health bar
         GREEN = (0, 255, 0)

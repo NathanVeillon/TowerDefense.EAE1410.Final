@@ -5,8 +5,8 @@
 #     Joshua Rosen
 
 import pygame
-from Library.Classes.Towers.BaseTower import *
 from pygame.locals import *
+from Library.Classes.Towers.BaseTower import BaseTower
 
 class BaseTile:
 

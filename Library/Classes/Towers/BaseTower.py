@@ -12,11 +12,15 @@ from pygame.locals import *
 from Library.Classes.Bullets.BaseBullet import *
 from Library.Classes.Bullets.Vector import *
 from math import *
+from Library.Classes.Enemies.BaseEnemy import *
+from Library.Classes.Enemies.EnemyWave import EnemyWave
+import copy
+
 
 class BaseTower():
     cost = 50 #Static instance variable
 
-    def __init__(self, tower_size, position, attack_radius, enemy_wave_list, tile_map_size, image_location='Library/Assets/Towers/BaseTower.png'):
+    def __init__(self, tower_size, position, attack_radius, enemy_wave, tile_map_size, image_location='Library/Assets/Towers/BaseTower.png'):
         self.window = pygame.display.get_surface()
         self.position = position #When the tower is placed, this position is set to the corresponding tile's position
         self.dimension = (tower_size, tower_size) #tower_size should be equal to tile_size
@@ -29,7 +33,7 @@ class BaseTower():
         self.bullet_damage = 10
         self.bullet_speed = 7
 
-        self.enemy_wave = enemy_wave_list
+        self.enemy_wave = enemy_wave
         self.enemy_to_attack = None
 
         self.type = 'BaseTower'
@@ -45,6 +49,13 @@ class BaseTower():
         self.timer = 0 #Time delay for attacking
         self.attack_delay = 75
 
+        #For perfect accuracy
+        self.frames_to_wait = 0
+        self.waiter = 0
+        self.new_enemy = None
+        self.attack_position = None
+        self.new_wave = EnemyWave(self.enemy_wave.tile_map, self.enemy_wave.enemy_wave_info)
+
     #Set the enemy_wave to the next wave in the list
     def get_new_wave(self, new_wave):
         self.enemy_wave = new_wave
@@ -58,45 +69,57 @@ class BaseTower():
         return (distance < self.attack_radius)
 
     #Find the first enemy to attack
-    def find_first_enemy(self):
-        for enemy in self.enemy_wave:
+    def find_first_enemy(self, pass_enemy_wave=None):
+        if (pass_enemy_wave == None):
+            pass_enemy_wave = self.enemy_wave
+
+        for enemy in pass_enemy_wave.enemy_list:
             if self.enemy_within_range(enemy):
+                print(enemy)
                 return enemy
 
         return None
 
     #Fires a bullet to attack enemy
     def attack_enemy(self):
+        self.new_wave.tick()
+
         self.enemy_to_attack = self.find_first_enemy()
         if (self.enemy_to_attack == None):
-            self.timer = 0
             return None
 
-        self.timer += 1 #Needs a time delay for attacking
-        if (self.timer == self.attack_delay or self.timer == 1):
-            #This way the tower instantly fires immediately upon finding an enemy,
-            # then it waits out the delay for the next shot.
-            if (self.timer == 1):
-                pass
+        if (self.frames_to_wait == 0):
+            #self.enemy_to_attack = self.find_first_enemy()
+            #create an enemy, simulate its movement for _ frames to find new position
+            #self.new_wave = copy.copy(self.enemy_wave)
+            #self.new_enemy = copy.copy(self.enemy_to_attack)
+
+            i = 0
+            while (i < self.attack_delay):
+                self.new_wave.tick()
+                i += 1
+                #self.new_enemy.move_enemy() #Maybe?
+
+            self.new_enemy = self.find_first_enemy()
+            if (self.new_enemy != None):
+                distance = sqrt((self.new_enemy.position[0] - self.center_position[0])**2 + (self.new_enemy.position[1] - self.center_position[1])**2)
+                self.frames_to_wait = distance / self.bullet_speed
+                self.attack_position = self.new_enemy.position
+                print(self.enemy_to_attack.position)
+                print(self.attack_position)
+                self.waiter = 0
             else:
-                self.timer = 2
+                return None
 
-            attack_position = list(self.enemy_to_attack.position)
-
-            #Adjust attack position for more accuracy based on enemy movement
-            if (self.enemy_to_attack.movement[0] > 0):
-                attack_position[0] += 10 + (self.enemy_to_attack.size[0] // 2) * self.enemy_to_attack.speed
-            if (self.enemy_to_attack.movement[0] < 0):
-                attack_position[0] -= 10 + (self.enemy_to_attack.size[0] // 2) * self.enemy_to_attack.speed
-            if (self.enemy_to_attack.movement[1] > 0):
-                attack_position[1] += 10 + (self.enemy_to_attack.size[1] // 2) * self.enemy_to_attack.speed
-            if (self.enemy_to_attack.movement[1] < 0):
-                attack_position[1] -= 10 + (self.enemy_to_attack.size[1] // 2) * self.enemy_to_attack.speed
-
-            attack_vector = Vector.fromPoints(self.center_position, attack_position)
+        elif (self.waiter >= (self.attack_delay - self.frames_to_wait)):
+            attack_vector = Vector.fromPoints(self.center_position, self.attack_position)
             attack_vector = attack_vector.normalize()
 
             self.bullet_list.add(BaseBullet(self.center_position, (5,5), self.bullet_speed, attack_vector, self.bullet_damage))
+            self.waiter = 0
+            self.frames_to_wait = 0
+        else:
+            self.waiter += 1
 
     #Blits tower onto main window (if being placed) or onto tile surface (if already placed)
     def display_tower(self):

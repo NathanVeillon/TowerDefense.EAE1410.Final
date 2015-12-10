@@ -49,7 +49,7 @@ class DisplayLevel:
 
     def update_tower_enemies(self):
         for tower in self.tower_list:
-            tower.get_new_wave(self.current_enemy_wave.enemy_list)
+            tower.get_new_wave(self.current_enemy_wave)
 
     def display_towers(self):
         for tower in self.tower_list:
@@ -66,7 +66,7 @@ class DisplayLevel:
 
     def check_collide(self):
         for tower in self.tower_list:
-            for e in self.current_enemy_wave:
+            for e in self.current_enemy_wave.enemy_list:
                     for b in tower.bullet_list:
                         if (pygame.sprite.collide_rect(e, b)):
                             e.damage_enemy(tower.bullet_damage)

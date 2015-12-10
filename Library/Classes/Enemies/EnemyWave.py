@@ -43,8 +43,8 @@ class EnemyWave():
         self.dead_enemies = 0
         self.reached_end = 0 #Ticks to 1 if enemy reaches the end, then is subtracted from lives and set to 0 again
 
-    def __iter__(self):
-        return self.enemy_list.__iter__()
+    #def __iter__(self):
+    #    return self.enemy_list.__iter__()
 
     def parse_enemy_info(self, variable_name):
         if variable_name in self.enemy_wave_info:
@@ -110,12 +110,16 @@ class EnemyWave():
 
 
     ## one call to tick all enemies forward one more frame.
-    def tick(self):
-        self.count += 1
-        if (self.count % self.deploy_delay == 0) and (self.deployed_enemies < self.num_enemies):
-            self.spawn_enemies()
-        
+    ## no_display is a bool that prevents the enemies from being displayed
+    def tick(self, no_display=False):
         self.__cull_enemies()
-        for enemy in self.enemy_list:
-            enemy.display_enemy()
+
+        if (no_display == False):
+            self.count += 1
+            if (self.count % self.deploy_delay == 0) and (self.deployed_enemies < self.num_enemies):
+                self.spawn_enemies()
+
+            for enemy in self.enemy_list:
+                enemy.display_enemy()
+
         self.__check_enemy_status()
