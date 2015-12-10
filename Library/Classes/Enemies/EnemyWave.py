@@ -81,12 +81,16 @@ class EnemyWave():
                     return
                 if current_tile.current_direction == 'U':
                     speed = (0, -self.speed)
+                    enemy.rotate_enemy('U')
                 elif current_tile.current_direction == 'D':
                     speed = (0, self.speed)
+                    enemy.rotate_enemy('D')
                 elif current_tile.current_direction == 'L':
                     speed = (-self.speed, 0)
+                    enemy.rotate_enemy('L')
                 else:
                     speed = (self.speed, 0)
+                    enemy.rotate_enemy('R')
                 enemy.update_enemy(speed)
 
     ## kills enemies that have no health

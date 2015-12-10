@@ -108,13 +108,27 @@ class BaseEnemy(pygame.sprite.Sprite):
 
         return False
 
+    def rotate_enemy(self, direction):
+        self.image = pygame.image.load(self.image_location)
+        self.image = pygame.transform.scale(self.image, self.size)
+        self.rect = self.image.get_rect()
+
+        if (direction == "U"):
+            self.image = pygame.transform.rotate(self.image, 0)
+        if (direction == "D"):
+            self.image = pygame.transform.rotate(self.image, 180)
+        if (direction == "L"):
+            self.image = pygame.transform.rotate(self.image, 90)
+        if (direction == "R"):
+            self.image = pygame.transform.rotate(self.image, -90)
+
     def update_enemy(self, speed):
         self.movement = speed
         self.feed = False
         self.y_direction = False
         if self.movement[0] ==0:
             self.y_direction = True
-    
+
     def get_tile_position(self):
         return self.current_tile_position
 
