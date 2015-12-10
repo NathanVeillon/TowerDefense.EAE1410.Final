@@ -22,6 +22,8 @@ from pygame.locals import *
 
 class BaseEnemy(pygame.sprite.Sprite):
 
+    cash = 5
+
     def __init__(self, tile_map, speed=None, health=None, size=None, image_location=None):
         # just setting default values
         if(speed):
@@ -40,8 +42,6 @@ class BaseEnemy(pygame.sprite.Sprite):
             self.image_location = image_location
         else:
             self.image_location = 'Library\Assets\Enemies\BaseEnemy.png'
-
-
 
         ## position information
         pygame.sprite.Sprite.__init__(self)

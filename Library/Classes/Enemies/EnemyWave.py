@@ -43,6 +43,9 @@ class EnemyWave():
         self.dead_enemies = 0
         self.reached_end = 0 #Ticks to 1 if enemy reaches the end, then is subtracted from lives and set to 0 again
 
+        self.cash_yield = eval(self.enemy_type).cash
+        self.dead_cash_enemies = 0 #Ticks to 1 if an enemy dies, cash is added and it is set to 0 again
+
     def __iter__(self):
         return self.enemy_list.__iter__()
 
@@ -91,6 +94,7 @@ class EnemyWave():
         for enemy in self.enemy_list:
             if enemy.health <= 0:
                 self.dead_enemies += 1
+                self.dead_cash_enemies += 1
                 self.enemy_list.remove(enemy)
 
     def spawn_enemies(self):

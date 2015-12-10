@@ -19,7 +19,7 @@ empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'healt
 class DisplayLevel:
 
     def __init__(self,level_file_name):
-        self.player = PlayerModel(500, 5) #Player starts with 500 dollars and 5 lives
+        self.player = PlayerModel(150, 5)
 
         self.level_name = level_file_name
         self.level = eval(level_file_name)()
@@ -82,6 +82,10 @@ class DisplayLevel:
         #Update live counter by subtracting each enemy that reached the end
         self.player.lives -= self.current_enemy_wave.reached_end
         self.current_enemy_wave.reached_end = 0
+
+        self.player.wallet += self.current_enemy_wave.dead_cash_enemies * self.current_enemy_wave.cash_yield
+        self.current_enemy_wave.dead_cash_enemies = 0
+
         if (self.player.lives < 1):
             if (isinstance(self.game_over, GameOverScreen)):
                 self.game_over.display_self()
