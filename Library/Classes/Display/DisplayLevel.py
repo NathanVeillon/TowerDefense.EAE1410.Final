@@ -47,9 +47,13 @@ class DisplayLevel:
             pygame.mixer.music.stop()
 
         if (self.placement_phase == True):
+            #Royalty-free music taken from incompetech.com
+            #http://incompetech.com/music/royalty-free/index.html?isrc=USUAN1400005
             pygame.mixer.music.load('Library\Assets\Music\Pippin_the_Hunchback.mp3')
             pygame.mixer.music.play()
         else:
+            #Royalty-free music taken from bensound.com
+            #http://www.bensound.com/royalty-free-music/track/epic
             pygame.mixer.music.load('Library\Assets\Music\Epic.mp3')
             pygame.mixer.music.set_volume(0.5)
             pygame.mixer.music.play()
