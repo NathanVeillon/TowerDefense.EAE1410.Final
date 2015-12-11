@@ -19,6 +19,7 @@ empty_wave={'num_enemies':0,'deploy_delay':1,'type':'BaseEnemy','speed':1,'healt
 class DisplayLevel:
 
     def __init__(self,level_file_name):
+        pygame.mixer.init()
         self.player = PlayerModel(150, 5)
 
         self.level_name = level_file_name
@@ -38,7 +39,27 @@ class DisplayLevel:
         self.level_finished = False
         self.game_over = None #Game over screen
 
+        self.placement_phase = True
+        self.update_sound()
+
+    def update_sound(self):
+        if (pygame.mixer.music.get_busy()):
+            pygame.mixer.music.stop()
+
+        if (self.placement_phase == True):
+            pygame.mixer.music.load('Library\Assets\Music\Pippin_the_Hunchback.mp3')
+            pygame.mixer.music.play()
+        else:
+            pygame.mixer.music.load('Library\Assets\Music\Epic.mp3')
+            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.play()
+
+
     def get_next_wave(self):
+        if (self.placement_phase == True):
+            self.placement_phase = False
+            self.update_sound()
+
         if(self.current_enemy_wave_number == self.total_enemy_waves):
             self.check_level_finished()
             return
@@ -78,6 +99,11 @@ class DisplayLevel:
 
     def update(self):
         self.check_collide()
+
+        if (self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies
+            and self.placement_phase == False):
+            self.placement_phase = True
+            self.update_sound()
 
         #Update live counter by subtracting each enemy that reached the end
         self.player.lives -= self.current_enemy_wave.reached_end
