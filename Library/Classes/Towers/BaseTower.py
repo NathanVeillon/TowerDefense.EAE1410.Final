@@ -132,3 +132,5 @@ class BaseTower():
                 self.bullet_list.remove(bullet) #If bullet goes offscreen, remove bullet
             else:
                 bullet.display_bullet()
+
+
