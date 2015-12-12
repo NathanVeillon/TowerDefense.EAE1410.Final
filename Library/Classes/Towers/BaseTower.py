@@ -98,11 +98,23 @@ class BaseTower():
 
             self.bullet_list.add(BaseBullet(self.center_position, (5,5), self.bullet_speed, attack_vector, self.bullet_damage))
 
+    def display_radius(self):
+        s = pygame.Surface((self.attack_radius * 2,self.attack_radius * 2))
+        ck = ((128, 0, 5))
+        s.fill(ck)
+        s.set_colorkey(ck)
+        s.set_alpha(35)
+
+        pygame.draw.circle(s, (0, 25, 200), (s.get_width() // 2, s.get_height() // 2), self.attack_radius)
+        self.window.blit(s, (self.radius_center[0] - (s.get_width() // 2) + (self.dimension[0] // 2), self.radius_center[1] - (s.get_height() // 2) + (self.dimension[1] // 2)))
+
     #Blits tower onto main window (if being placed) or onto tile surface (if already placed)
     def display_tower(self):
         if (self.placed == False):
             self.image.set_alpha(128) #Make unplaced tower transparent
             self.center_position = self.find_centered_mouse_pos()
+            self.radius_center = self.find_centered_mouse_pos()
+            self.display_radius()
             self.window.blit(self.image, self.center_position)
         else:
             self.image.set_alpha(255) #Make placed tower opaque
@@ -114,6 +126,8 @@ class BaseTower():
 
             #Blit the tower onto the CENTER of the tile_surface, coordinates are relative to the tile
             self.tile_surface.blit(self.image, ((tile_size[0] - self.dimension[0]) // 2, (tile_size[1] - self.dimension[1])//2))
+
+            self.radius_center = (self.center_position[0] - (self.dimension[0]//2), self.center_position[1] - (self.dimension[1] // 2))
 
             self.draw_bullets()
 
