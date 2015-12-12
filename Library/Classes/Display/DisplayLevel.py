@@ -77,8 +77,16 @@ class DisplayLevel:
             tower.get_new_wave(self.current_enemy_wave.enemy_list)
 
     def display_towers(self):
+        show_radii = False
+
         for tower in self.tower_list:
             tower.display_tower()
+            if tower.placed == False:
+                show_radii = True
+
+        if show_radii:
+            for tower in self.tower_list:
+                tower.display_radius()
 
     def display_tile_map(self):
         self.tile_map.display_tile_map()

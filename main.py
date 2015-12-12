@@ -11,7 +11,7 @@
 
 #Royalty-free music taken from bensound.com
             #http://www.bensound.com/royalty-free-music/track/epic
-            
+
 import sys
 import pygame
 from pygame.locals import *
