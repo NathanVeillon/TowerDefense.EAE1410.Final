@@ -4,7 +4,8 @@
 #     David Mirabile
 #     Nathan Veillon
 #     Joshua Rosen
-# 
+#     Kathy Huang
+#
 # Purpose:
 # Holds basic information about health and displaying of an enemy.
 
@@ -19,6 +20,7 @@ from random import randint
 
 import pygame
 from pygame.locals import *
+from Library.Classes.Animation import pyganim
 
 class BaseEnemy(pygame.sprite.Sprite):
 
@@ -38,10 +40,35 @@ class BaseEnemy(pygame.sprite.Sprite):
             self.size = size
         else:
             self.size = (35,35)
+        # Makes all images
         if(image_location):
-            self.image_location = image_location
+            #
+            self.image_location = image_location.split('.')[0]
         else:
-            self.image_location = 'Library\Assets\Enemies\BaseEnemy.png'
+            self.image_location = 'Library\Assets\Enemies\BaseEnemy'
+
+        ############################
+        ##### Animation Setup  #####
+        ############################
+
+        # Turning types into array
+        self.animTypes = 'right_walk left_walk up_walk down_walk'.split()
+        self.animObjs = {}
+        # We are looping through all of the types creating a collection of images we turn into the animations
+        for animType in self.animTypes:
+            # to get the image info for the animation it creates by taking the standard image the animation type and frame number
+            image_locations = [('%s_%s_%s.gif' % (self.image_location, animType, str(num).rjust(3, '0')), 0.2) for num in range(2)]
+            self.animObjs[animType] = pyganim.PygAnimation(image_locations)
+            # this is effectively the same thing as the pygame transform but for the animation instead
+            self.animObjs[animType].scale(self.size)
+            # I don't know if this is required, I'm just doing it to be sure.
+            self.animObjs[animType].makeTransformsPermanent()
+
+
+        # Creates the left walk animation from the right walk
+        #self.animObjs['left_walk'] = self.animObjs['right_walk'].getCopy()
+        #self.animObjs['left_walk'].flip(True,False)
+        #self.animObjs['left_walk'].makeTransformsPermanent()
 
         ## position information
         pygame.sprite.Sprite.__init__(self)
@@ -52,9 +79,11 @@ class BaseEnemy(pygame.sprite.Sprite):
         self.position = (self.x_position,self.y_position)
         self.movement = (0,0)
 
-        self.image = pygame.image.load(self.image_location)
-        self.image = pygame.transform.scale(self.image, self.size)
-        self.rect = self.image.get_rect()
+        # Setting up the conductor for the sprite
+        self.moveConductor = pyganim.PygConductor(self.animObjs)
+        self.image = self.animObjs['left_walk']
+        # the get rectangle function is also different oddly enough
+        self.rect = self.image.getRect()
 
         self.feed = True
 
@@ -70,7 +99,7 @@ class BaseEnemy(pygame.sprite.Sprite):
     ## Moves the enemy, then checks to see if the enemy has reached the next tile
     ## if the enemy has reached the next tile, requests new info
     def __move_enemy(self):
-
+        self.moveConductor.play()
         ## changes position according to speed
         self.x_position += self.movement[0]
         self.y_position += self.movement[1]
@@ -109,18 +138,19 @@ class BaseEnemy(pygame.sprite.Sprite):
         return False
 
     def rotate_enemy(self, direction):
-        self.image = pygame.image.load(self.image_location)
-        self.image = pygame.transform.scale(self.image, self.size)
-        self.rect = self.image.get_rect()
+        # we select a different animation if our direction changes, but because we
+        # can't use pygame rotation
 
         if (direction == "U"):
-            self.image = pygame.transform.rotate(self.image, 0)
+            self.image = self.animObjs['up_walk']
         if (direction == "D"):
-            self.image = pygame.transform.rotate(self.image, 180)
+            self.image = self.animObjs['down_walk']
         if (direction == "L"):
-            self.image = pygame.transform.rotate(self.image, 90)
+            self.image = self.animObjs['left_walk']
         if (direction == "R"):
-            self.image = pygame.transform.rotate(self.image, -90)
+            self.image = self.animObjs['right_walk']
+
+        self.rect = self.image.getRect()
 
     def update_enemy(self, speed):
         self.movement = speed
@@ -158,8 +188,8 @@ class BaseEnemy(pygame.sprite.Sprite):
         pygame.draw.rect(self.window, cur_color, Rect((self.__find_blit_position()[0], self.__find_blit_position()[1] - 12),
                                                        (self.health_bar,   5)))
 
-
-        self.window.blit(self.image, self.__find_blit_position())
+        # This is weird but for animations we the window and background are flipped
+        self.image.blit(self.window, self.__find_blit_position())
 
     ## determines where to blit the enemy to the screen
     def __find_blit_position(self):
