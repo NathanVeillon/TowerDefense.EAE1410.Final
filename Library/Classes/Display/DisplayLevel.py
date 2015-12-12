@@ -125,6 +125,9 @@ class DisplayLevel:
         self.current_enemy_wave.dead_cash_enemies = 0
 
         if (self.player.lives < 1):
+            # So lives don't become negative when game over screen is displayed
+            if (self.player.lives < 0):
+                self.player.lives = 0
             if (isinstance(self.game_over, GameOverScreen)):
                 self.game_over.display_self()
                 if (self.game_over.timer > 400):
