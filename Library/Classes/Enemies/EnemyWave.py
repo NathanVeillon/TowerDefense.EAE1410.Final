@@ -10,8 +10,7 @@
 
 
 from Library.Classes.Enemies.ImportEnemies import *
-
-
+import pygame
 ## implementation notice:
 ## This class is designed to manage enemies, and generate waves of enemies.
 ## This class should be used when dealing with enemies
@@ -46,6 +45,15 @@ class EnemyWave():
         self.cash_yield = eval(self.enemy_type).cash
         self.dead_cash_enemies = 0 #Ticks to 1 if an enemy dies, cash is added and it is set to 0 again
 
+        #Animation
+        self.explosionAnim = pyganim.PygAnimation([('Library\Assets\Explosion\Explosion_S_000.gif', 0.5),
+                                                   ('Library\Assets\Explosion\Explosion_S_000.gif', 0.5),
+                                                    ('Library\Assets\Explosion\Explosion_S_001.gif', 0.5),
+                                                   ('Library\Assets\Explosion\Explosion_S_001.gif', 0.5),
+                                                    ('Library\Assets\Explosion\Explosion_S_002.gif', 0.5),
+                                                   ('Library\Assets\Explosion\Explosion_S_002.gif', 0.5)])
+        self.explosionAnim.play()
+        self.window = pygame.display.get_surface()
     def __iter__(self):
         return self.enemy_list.__iter__()
 
@@ -73,19 +81,19 @@ class EnemyWave():
         for enemy in self.enemy_list:
             if(enemy.check_feed()):
                 enemy_tile_position = enemy.get_tile_position()
-                current_tile = self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]]
-                if(current_tile.type == 'End'):
+                self.current_tile = self.tile_map.tile_map[enemy_tile_position[0]][enemy_tile_position[1]]
+                if(self.current_tile.type == 'End'):
                     self.dead_enemies += 1
                     self.reached_end += 1
                     self.enemy_list.remove(enemy)
                     return
-                if current_tile.current_direction == 'U':
+                if self.current_tile.current_direction == 'U':
                     speed = (0, -self.speed)
                     enemy.rotate_enemy('U')
-                elif current_tile.current_direction == 'D':
+                elif self.current_tile.current_direction == 'D':
                     speed = (0, self.speed)
                     enemy.rotate_enemy('D')
-                elif current_tile.current_direction == 'L':
+                elif self.current_tile.current_direction == 'L':
                     speed = (-self.speed, 0)
                     enemy.rotate_enemy('L')
                 else:
@@ -99,7 +107,9 @@ class EnemyWave():
             if enemy.health <= 0:
                 self.dead_enemies += 1
                 self.dead_cash_enemies += 1
+                self.explosionAnim.blit(self.window, enemy.position)
                 self.enemy_list.remove(enemy)
+
 
     def spawn_enemies(self):
         # this tries creating enemies based on the declared type and if it fails then defaults to creating a
@@ -124,6 +134,7 @@ class EnemyWave():
             self.spawn_enemies()
         
         self.__cull_enemies()
+
         for enemy in self.enemy_list:
             enemy.display_enemy()
         self.__check_enemy_status()
