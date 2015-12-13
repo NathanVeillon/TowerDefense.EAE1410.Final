@@ -4,6 +4,7 @@
 #     David Mirabile
 #     Nathan Veillon
 #     Joshua Rosen
+#     Kathy Huang
 #
 # Purpose:
 # Manage and construct waves of enemies.
