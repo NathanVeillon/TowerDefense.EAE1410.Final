@@ -3,6 +3,7 @@
 # File Contributors
 #     Nathan Veillon
 #     Joshua Rosen
+#     Kathy Huang
 
 import pygame
 from pygame.locals import *
@@ -104,6 +105,11 @@ class DisplayLevel:
                         if (pygame.sprite.collide_rect(e, b)):
                             e.damage_enemy(tower.bullet_damage)
                             tower.bullet_list.remove(b)
+                            #Royalty-Free sound effect from Adobe
+                            #http://offers.adobe.com/en/na/audition/offers/audition_dlc.html
+                            explodeSound = pygame.mixer.Sound('Library\Assets\Music\Explosion_C-4_01.wav')
+                            explodeSound.set_volume(0.4)
+                            explodeSound.play()
 
     def check_level_finished(self):
         if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
