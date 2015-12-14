@@ -2,19 +2,22 @@
 #
 # File Contributors
 #     Joshua Rosen
-
+#     Kathy Huang
 import pygame
 from pygame.locals import *
+from Library.Classes.Animation import pyganim
 
 class GameOverScreen():
 
-    def __init__(self, black_image_location='Library/Assets/GameOver.png'):
+    def __init__(self):
         self.window = pygame.display.get_surface()
 
         self.cur_alpha = 0
-        self.black_image = pygame.image.load(black_image_location).convert()
-        self.black_image = pygame.transform.scale(self.black_image,(self.window.get_width(), self.window.get_height()))
-        self.black_image.set_alpha(self.cur_alpha)
+        self.image_location='Library/Assets/GameOver/GameOver'
+        image_locations = [('%s_%s.png' % (self.image_location, str(num).rjust(3, '0')), 0.1) for num in range(30)]
+
+        self.gameoverAnim = pyganim.PygAnimation(image_locations)
+        self.gameoverAnim.play()
 
         self.game_over_font = pygame.font.SysFont("Cambria", 240)
         self.cur_red = 0
@@ -25,12 +28,6 @@ class GameOverScreen():
         self.timer += 1
 
         if (self.cur_alpha != 255):
-            self.cur_alpha += 1
-        self.black_image.set_alpha(self.cur_alpha)
-        self.window.blit(self.black_image, (0,0))
-
-        if (self.cur_red != 255):
-            self.cur_red += 1
-        self.game_over_surf = self.game_over_font.render("GAME OVER", True, (self.cur_red, 0, 0), None)
-        self.game_over_surf = pygame.transform.scale(self.game_over_surf, (600, 400))
-        self.window.blit(self.game_over_surf, (50, 75))
+            self.cur_alpha += 5
+        self.gameoverAnim.set_alpha(self.cur_alpha)
+        self.gameoverAnim.blit(self.window, (0,0))
