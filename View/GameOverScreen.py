@@ -19,7 +19,6 @@ class GameOverScreen():
         self.gameoverAnim = pyganim.PygAnimation(image_locations)
         self.gameoverAnim.play()
 
-        self.game_over_font = pygame.font.SysFont("Cambria", 240)
         self.cur_red = 0
 
         self.timer = 0
