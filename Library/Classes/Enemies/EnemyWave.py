@@ -47,12 +47,9 @@ class EnemyWave():
         self.dead_cash_enemies = 0 #Ticks to 1 if an enemy dies, cash is added and it is set to 0 again
 
         #Animation
-        self.explosionAnim = pyganim.PygAnimation([('Library\Assets\Explosion\Explosion_S_000.gif', 0.5),
-                                                   ('Library\Assets\Explosion\Explosion_S_000.gif', 0.5),
-                                                    ('Library\Assets\Explosion\Explosion_S_001.gif', 0.5),
-                                                   ('Library\Assets\Explosion\Explosion_S_001.gif', 0.5),
-                                                    ('Library\Assets\Explosion\Explosion_S_002.gif', 0.5),
-                                                   ('Library\Assets\Explosion\Explosion_S_002.gif', 0.5)])
+        self.explosionAnim = pyganim.PygAnimation([('Library\Assets\Explosion\Explosion_S_000.gif', 0.2),
+                                                    ('Library\Assets\Explosion\Explosion_S_001.gif', 0.2),
+                                                    ('Library\Assets\Explosion\Explosion_S_002.gif', 0.2),])
         self.explosionAnim.play()
         self.window = pygame.display.get_surface()
     def __iter__(self):

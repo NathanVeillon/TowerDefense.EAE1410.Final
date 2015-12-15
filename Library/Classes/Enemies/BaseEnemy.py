@@ -64,12 +64,6 @@ class BaseEnemy(pygame.sprite.Sprite):
             # I don't know if this is required, I'm just doing it to be sure.
             self.animObjs[animType].makeTransformsPermanent()
 
-
-        # Creates the left walk animation from the right walk
-        #self.animObjs['left_walk'] = self.animObjs['right_walk'].getCopy()
-        #self.animObjs['left_walk'].flip(True,False)
-        #self.animObjs['left_walk'].makeTransformsPermanent()
-
         ## position information
         pygame.sprite.Sprite.__init__(self)
         self.current_tile_position = tile_map.start_position

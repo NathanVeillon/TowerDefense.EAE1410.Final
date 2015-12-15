@@ -29,31 +29,31 @@ class LevelMenu():
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
-
-        self.menu_font = pygame.font.SysFont("Cambria", 80)
+        self.logo = pygame.image.load('Library/Assets/Logo.png')
+        self.menu_font = pygame.font.SysFont("Lucida Console", 80)
 
     def display_start_menu(self):
-        self.menu_base.fill((255,255,255))
+        self.menu_base.fill((255,215,168))
 
         self.base_tower_button.display_button(BaseTower.cost)
         self.next_wave_button.display_button()
-
-        self.draw_text("Lives: " + str(self.display_level.player.lives), (30, 350)) #Lives display
-        self.draw_text("Money: " + str(self.display_level.player.wallet), (30, 15)) #Wallet display
+        self.menu_base.blit(self.logo,(15, 400))
+        self.draw_text("Lives: " + str(self.display_level.player.lives), (15, 350)) #Lives display
+        self.draw_text("Money: " + str(self.display_level.player.wallet), (15, 15)) #Wallet display
         self.display_wave_info()
 
         self.window.blit(self.menu_base,(self.map_size,0))
 
     def draw_text(self, text, coordinates):
-        text_surface = self.menu_font.render(text, True, (25, 60, 80), None)
-        text_surface = pygame.transform.scale(text_surface, (110, 50))
+        text_surface = self.menu_font.render(text, True, (76, 50, 25), None)
+        text_surface = pygame.transform.scale(text_surface, (145, 45))
         self.menu_base.blit(text_surface, coordinates)
 
     def display_wave_info(self):
         current_wave_number = str(self.display_level.current_enemy_wave_number)
         total_wave_number = str(self.display_level.total_enemy_waves)
 
-        self.draw_text('Wave '+current_wave_number+' out of '+total_wave_number, (30, 200))
+        self.draw_text('Wave '+current_wave_number+' out of '+total_wave_number, (15, 200))
 
         current_wave = self.display_level.current_enemy_wave
         enemies_remaining = current_wave.num_enemies-current_wave.dead_enemies
@@ -63,7 +63,7 @@ class LevelMenu():
             string = ' enemies'
         enemies_remaining = str(enemies_remaining)+string
 
-        self.draw_text(enemies_remaining+' remaining', (30, 250))
+        self.draw_text(enemies_remaining+' remaining', (15, 250))
 
 
     def clicked(self):
