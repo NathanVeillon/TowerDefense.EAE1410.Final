@@ -66,9 +66,10 @@ class DisplayLevel:
             self.update_sound()
 
         if(self.current_enemy_wave_number == self.total_enemy_waves):
-            self.check_level_finished()
+            self.level_finished = self.check_level_finished()
             return
         if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
+            self.level_menu.change_next_wave_button('Library/Assets/Buttons/WaveInProgress_Button_alt1.png')
             self.current_enemy_wave = EnemyWave(self.tile_map, self.enemy_waves[self.current_enemy_wave_number])
             self.current_enemy_wave_number += 1
             self.update_tower_enemies()
@@ -113,7 +114,7 @@ class DisplayLevel:
 
     def check_level_finished(self):
         if(self.current_enemy_wave.dead_enemies == self.current_enemy_wave.num_enemies):
-            self.level_finished = True
+            return True
 
     def update(self):
         self.check_collide()
@@ -122,6 +123,10 @@ class DisplayLevel:
             and self.placement_phase == False):
             self.placement_phase = True
             self.update_sound()
+            if(self.check_level_finished()):
+                self.level_menu.change_next_wave_button('Library/Assets/Buttons/NextLevel_Button_alt1.png')
+            else:
+                self.level_menu.change_next_wave_button('Library/Assets/Buttons/NextWave_Button_alt1.png')
 
         #Update live counter by subtracting each enemy that reached the end
         self.player.lives -= self.current_enemy_wave.reached_end

@@ -18,7 +18,7 @@ class SimpleButton:
 
         self.active = True #Deactivate button after round starts?
 
-        self.image = pygame.image.load(image_location).convert()
+        self.image = pygame.image.load(image_location).convert_alpha()
         self.image = pygame.transform.scale(self.image,self.dimension)
 
     #Returns true if the user clicked within the button bounds

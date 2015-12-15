@@ -27,15 +27,15 @@ class LevelMenu():
         #The menu_base is the panel surface that contains all of the tower buttons
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
-        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
-        self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
+        self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button_alt1.png', self.menu_base, (10, 80))
+        self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/FirstWave_Button_alt1.png', self.menu_base, (10, 150))
 
         self.menu_font = pygame.font.SysFont("Lucida Console", 80)
 
     def display_start_menu(self):
         self.menu_base.fill((255,215,168))
 
-        self.base_tower_button.display_button(BaseTower.cost)
+        self.base_tower_button.display_button()
         self.next_wave_button.display_button()
 
         self.draw_text("Lives: " + str(self.display_level.player.lives), (15, 350)) #Lives display
@@ -64,6 +64,14 @@ class LevelMenu():
         enemies_remaining = str(enemies_remaining)+string
 
         self.draw_text(enemies_remaining+' remaining', (15, 250))
+
+    def change_next_wave_button(self, new_image_location):
+        try:
+            self.next_wave_button.image = pygame.image.load(new_image_location).convert_alpha()
+            self.next_wave_button.image = pygame.transform.scale(self.next_wave_button.image,self.next_wave_button.dimension)
+        except:
+            self.next_wave_button.image = pygame.image.load('Library/Assets/Buttons/NextWave_Button_alt1.png').convert_alpha()
+            self.next_wave_button.image = pygame.transform.scale(self.next_wave_button.image,self.next_wave_button.dimension)
 
 
     def clicked(self):
