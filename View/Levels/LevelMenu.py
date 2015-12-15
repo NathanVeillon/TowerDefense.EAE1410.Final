@@ -27,9 +27,14 @@ class LevelMenu():
         #The menu_base is the panel surface that contains all of the tower buttons
         self.menu_base = pygame.Surface((self.window.get_width() - self.map_size, self.window.get_height()), flags=SRCALPHA, depth=32)
 
+
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button_alt1.png', self.menu_base, (10, 80))
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/FirstWave_Button_alt1.png', self.menu_base, (10, 150))
 
+        # Default Images, Replace Alt images if wanted.
+        # self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
+        # self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
+        self.logo = pygame.image.load('Library/Assets/Logo.png')
         self.menu_font = pygame.font.SysFont("Lucida Console", 80)
 
     def display_start_menu(self):
@@ -37,7 +42,7 @@ class LevelMenu():
 
         self.base_tower_button.display_button()
         self.next_wave_button.display_button()
-
+        self.menu_base.blit(self.logo,(15, 400))
         self.draw_text("Lives: " + str(self.display_level.player.lives), (15, 350)) #Lives display
         self.draw_text("Money: " + str(self.display_level.player.wallet), (15, 15)) #Wallet display
         self.display_wave_info()
