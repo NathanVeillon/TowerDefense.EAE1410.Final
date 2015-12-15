@@ -22,7 +22,7 @@ class GameOverScreen():
         #Royalty-Free sound effect from Adobe
         #http://offers.adobe.com/en/na/audition/offers/audition_dlc.html
         gameOverSound = pygame.mixer.Sound('Library\Assets\Music\Explosion Building Demolition Debris 01.wav')
-        gameOverSound.set_volume(0.8)
+        gameOverSound.set_volume(1.0)
         gameOverSound.play()
 
         self.cur_red = 0
