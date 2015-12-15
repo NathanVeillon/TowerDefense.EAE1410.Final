@@ -34,6 +34,7 @@ class EnemyWave():
         self.speed = self.parse_enemy_info('speed')
         self.size = self.parse_enemy_info('size')
         self.health = self.parse_enemy_info('health')
+        self.cash = self.parse_enemy_info('cash')
         ##self.__newWave(numEnemies)
         self.num_enemies = enemy_wave_info['num_enemies']
 
@@ -43,7 +44,7 @@ class EnemyWave():
         self.dead_enemies = 0
         self.reached_end = 0 #Ticks to 1 if enemy reaches the end, then is subtracted from lives and set to 0 again
 
-        self.cash_yield = eval(self.enemy_type).cash
+        self.cash_yield = 0
         self.dead_cash_enemies = 0 #Ticks to 1 if an enemy dies, cash is added and it is set to 0 again
 
         #Animation
@@ -115,10 +116,11 @@ class EnemyWave():
 
         #Note that is a parameter is None it will default to whatever is specified in BaseEnemy
         try:
-            new_enemy = eval(self.enemy_type)(self.tile_map, self.speed, self.health, self.size, self.image_location)
+            new_enemy = eval(self.enemy_type)(self.tile_map, self.speed, self.health, self.cash, self.size, self.image_location)
         except:
-            new_enemy = BaseEnemy(self.tile_map, self.speed, self.health, self.size, self.image_location)
+            new_enemy = BaseEnemy(self.tile_map, self.speed, self.health, self.cash, self.size, self.image_location)
 
+        self.cash_yield = new_enemy.cash#Sets the cash yield variable from the created enemy cash yield,
         self.speed = new_enemy.speed #Sets the Wave Speed variable to the created enemy speed,
         # Note: if this changes as the waves spawns enemies weird things will happen
         self.enemy_list.append(new_enemy)

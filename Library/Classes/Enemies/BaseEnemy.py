@@ -24,9 +24,7 @@ from Library.Classes.Animation import pyganim
 
 class BaseEnemy(pygame.sprite.Sprite):
 
-    cash = 5
-
-    def __init__(self, tile_map, speed=None, health=None, size=None, image_location=None):
+    def __init__(self, tile_map, speed=None, health=None, cash=None, size=None, image_location=None):
         # just setting default values
         if(speed):
             self.speed = speed
@@ -36,6 +34,10 @@ class BaseEnemy(pygame.sprite.Sprite):
             self.health = health
         else:
             self.health = 15
+        if(cash):
+            self.cash = cash
+        else:
+            self.cash = 5
         if(size):
             self.size = size
         else:
@@ -46,6 +48,7 @@ class BaseEnemy(pygame.sprite.Sprite):
             self.image_location = image_location.split('.')[0]
         else:
             self.image_location = 'Library\Assets\Enemies\BaseEnemy'
+
 
         ############################
         ##### Animation Setup  #####

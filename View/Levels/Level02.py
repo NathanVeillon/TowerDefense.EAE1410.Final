@@ -17,10 +17,7 @@ class Level02:
          ]
 
         self.enemy_waves = [
-            {'num_enemies':10,'deploy_delay':100,'type':'BaseEnemy','speed':2,'health':15,'size':(20,20),
-             'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
-            {'num_enemies':5,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':25,'size':(20,20),
-             'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
-            {'num_enemies':4,'deploy_delay':50,'type':'BaseEnemy','speed':5,'health':2,'size':(20,20),
-             'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
+            {'num_enemies':10,'deploy_delay':100,'type':'BaseEnemy'},
+            {'num_enemies':5,'deploy_delay':50,'type':'StrongEnemy'},
+            {'num_enemies':4,'deploy_delay':50,'type':'QuickEnemy'}
         ]

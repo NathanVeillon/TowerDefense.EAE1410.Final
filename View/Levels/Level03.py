@@ -17,13 +17,13 @@ class Level03:
          ]
 
         self.enemy_waves = [
-            {'num_enemies':10,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':40,'size':(30,30),
+            {'num_enemies':10,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':40,'cash':10, 'size':(30,30),
              'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
-            {'num_enemies':20,'deploy_delay':25,'type':'BaseEnemy','speed':2,'health':30,'size':(20,20),
+            {'num_enemies':20,'deploy_delay':25,'type':'BaseEnemy','speed':2,'health':30,'cash':10,'size':(20,20),
              'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
-            {'num_enemies':30,'deploy_delay':30,'type':'BaseEnemy','speed':2.5,'health':20,'size':(40,40),
+            {'num_enemies':30,'deploy_delay':30,'type':'BaseEnemy','speed':4,'health':20, 'cash':5,'size':(40,40),
              'image_location':'Library\Assets\Enemies\BaseEnemy.png'},
-            {'num_enemies':1,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':500,'size':(60,60),
+            {'num_enemies':1,'deploy_delay':50,'type':'BaseEnemy','speed':1,'health':1000, 'cash':500, 'size':(60,60),
              'image_location':'Library\Assets\Enemies\BaseEnemy.png'}
 
         ]
