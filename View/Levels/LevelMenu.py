@@ -29,7 +29,7 @@ class LevelMenu():
 
         self.base_tower_button = SimpleButton((150, 50), 'Library/Assets/Buttons/BaseTower_Button.png', self.menu_base, (10, 80))
         self.next_wave_button = SimpleButton((150, 50), 'Library/Assets/Buttons/NextWave_Button.png', self.menu_base, (10, 150))
-
+        self.logo = pygame.image.load('Library/Assets/Logo.png')
         self.menu_font = pygame.font.SysFont("Lucida Console", 80)
 
     def display_start_menu(self):
@@ -37,7 +37,7 @@ class LevelMenu():
 
         self.base_tower_button.display_button(BaseTower.cost)
         self.next_wave_button.display_button()
-
+        self.menu_base.blit(self.logo,(15, 400))
         self.draw_text("Lives: " + str(self.display_level.player.lives), (15, 350)) #Lives display
         self.draw_text("Money: " + str(self.display_level.player.wallet), (15, 15)) #Wallet display
         self.display_wave_info()
