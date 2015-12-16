@@ -57,6 +57,7 @@ class DisplayWindow:
                 level_string = 'Level'+'{0:0>2}'.format(self.level_number)
                 self.level = DisplayLevel(level_string)
             except:
+                self.level_number = 1
                 self.level = DisplayLevel("Level01")
 
         self.level.display_tile_map()
